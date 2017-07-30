@@ -24,7 +24,6 @@ export default class Settings extends Component {
         <TouchableHighlight
           underlayColor={'white'}
           style={styles.options}
-          underlayColor={'white'}
           onPress={() => this.goToDocument("ID Document")}>
           <View style={styles.optionsElement}>
             <Text style={styles.optionsText}>
@@ -42,7 +41,6 @@ export default class Settings extends Component {
         <TouchableHighlight
           underlayColor={'white'}
           style={styles.options}
-          underlayColor={'white'}
           onPress={() => this.goToDocument("ID Selfie")}>
           <View style={styles.optionsElement}>
             <Text style={styles.optionsText}>
@@ -60,7 +58,6 @@ export default class Settings extends Component {
         <TouchableHighlight
           underlayColor={'white'}
           style={styles.options}
-          underlayColor={'white'}
           onPress={() => this.goToDocument("Proof Of Address")}>
           <View style={styles.optionsElement}>
             <Text style={styles.optionsText}>

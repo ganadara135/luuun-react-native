@@ -6,8 +6,6 @@ import Signup from './../screens/auth/signup'
 import AuthVerifyMobile from './../screens/auth/verifyMobile'
 import SetUsername from './../screens/auth/setUsername'
 import ForgetPassword from './../screens/auth/forgetPassword'
-import BankAccounts from './../screens/withdraw/bankAccounts'
-import BitcoinAddresses from './../screens/withdraw/bitcoinAddresses'
 import WithdrawalAmountEntry from './../screens/withdraw/amountEntry'
 import SendMoney from './../screens/transfer/amountEntry'
 import SendTo from './../screens/transfer/sendTo'
@@ -24,13 +22,6 @@ import SettingsGetVerified from './../screens/settings/getVerified/getVerified'
 import Document from './../screens/settings/getVerified/document'
 import DocumentUpload from './../screens/settings/getVerified/documentUpload'
 import SettingsAddress from './../screens/settings/address'
-import SettingsBankAccounts from './../screens/settings/bankAccounts/bankAccounts'
-import SettingsBitcoinAddresses from './../screens/settings/bitcoinAddresses/bitcoinAddresses'
-import AddBankAccount from './../screens/settings/bankAccounts/addBankAccount'
-import EditBankAccount from './../screens/settings/bankAccounts/editBankAccount'
-import AddBitcoinAddress from './../screens/settings/bitcoinAddresses/addBitcoinAddress'
-import EditBitcoinAddress from './../screens/settings/bitcoinAddresses/editBitcoinAddress'
-import SettingsCards from './../screens/settings/cards'
 import SettingsSecurity from './../screens/settings/security/security'
 import ChangePassword from './../screens/settings/security/changePassword'
 import TwoFactor from './../screens/settings/security/twoFactor'
@@ -56,12 +47,6 @@ const Stack = {
   },
   ForgetPassword: {
     screen: ForgetPassword,
-  },
-  BankAccounts: {
-    screen: BankAccounts,
-  },
-  BitcoinAddresses: {
-    screen: BitcoinAddresses,
   },
   WithdrawalAmountEntry: {
     screen: WithdrawalAmountEntry,
@@ -110,27 +95,6 @@ const Stack = {
   },
   SettingsAddress: {
     screen: SettingsAddress,
-  },
-  SettingsBankAccounts: {
-    screen: SettingsBankAccounts,
-  },
-  SettingsBitcoinAddresses: {
-    screen: SettingsBitcoinAddresses,
-  },
-  AddBankAccount: {
-    screen: AddBankAccount,
-  },
-  EditBankAccount: {
-    screen: EditBankAccount,
-  },
-  AddBitcoinAddress: {
-    screen: AddBitcoinAddress,
-  },
-  EditBitcoinAddress: {
-    screen: EditBitcoinAddress,
-  },
-  SettingsCards: {
-    screen: SettingsCards,
   },
   SettingsSecurity: {
     screen: SettingsSecurity,

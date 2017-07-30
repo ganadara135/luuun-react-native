@@ -68,6 +68,9 @@ export default class SendTo extends Component {
         return false
       }
       let name = node.name.toLowerCase()
+      if (typeof node.contact == 'undefined') {
+        return false
+      }
       if (name.indexOf(searchText) !== -1) {
         return true
       }
