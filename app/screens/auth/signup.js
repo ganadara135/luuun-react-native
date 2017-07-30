@@ -4,6 +4,7 @@ import AuthService from './../../services/authService'
 import TextInput from './../../components/textInput'
 import MobileInput from './../../components/mobileNumberInput'
 import Colors from './../../config/colors'
+import Constants from './../../config/constants'
 import Header from './../../components/header'
 
 export default class Signup extends Component {
@@ -18,7 +19,7 @@ export default class Signup extends Component {
       last_name: '',
       email: '',
       mobile: '+1',
-      company: '',
+      company: Constants.company_id,
       password1: '',
       password2: '',
     }
@@ -80,13 +81,6 @@ export default class Signup extends Component {
                 value={this.state.mobile}
                 onChangeText={(mobile) => this.setState({ mobile })}
                 changeCountryCode={this.changeCountryCode}
-              />
-              <TextInput
-                style={styles.input}
-                title="Company name"
-                placeholder="e.g rehive"
-                autoCapitalize="none"
-                onChangeText={(company) => this.setState({ company })}
               />
               <TextInput
                 title="Password"

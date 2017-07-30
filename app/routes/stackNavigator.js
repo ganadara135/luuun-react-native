@@ -4,6 +4,7 @@ import Home from './drawerNavigator'
 import Login from './../screens/auth/login'
 import Signup from './../screens/auth/signup'
 import AuthVerifyMobile from './../screens/auth/verifyMobile'
+import SetUsername from './../screens/auth/setUsername'
 import ForgetPassword from './../screens/auth/forgetPassword'
 import BankAccounts from './../screens/withdraw/bankAccounts'
 import BitcoinAddresses from './../screens/withdraw/bitcoinAddresses'
@@ -49,6 +50,9 @@ const Stack = {
   },
   AuthVerifyMobile: {
     screen: AuthVerifyMobile,
+  },
+  SetUsername: {
+    screen: SetUsername,
   },
   ForgetPassword: {
     screen: ForgetPassword,
@@ -151,63 +155,4 @@ const Stack = {
 
 export default StackNavigator(Stack, {
     headerMode: 'none',
-  })
-// export default StackNavigator({
-//   Home: {
-//     name: 'Home',
-//     screen: DrawerNavigator(
-//       DrawerRoutes,
-//         {
-//           navigationOptions: StackNavigationOptions,
-//         // contentComponent: (props) => (
-//         //   <View style={styles.container}>
-//         //     <DrawerHeader navigation={props.navigation} />
-//         //     <ScrollView >
-//         //       <DrawerOption name="Home" gotoAddress="Home" navigation={props.navigation} />
-//         //       <DrawerOption name="Deposit" gotoAddress="Deposit" navigation={props.navigation} />
-//         //       <DrawerOption name="Withdraw" gotoAddress="Withdraw" navigation={props.navigation} />
-//         //       <DrawerOption name="Receive" gotoAddress="Receive" navigation={props.navigation} />
-//         //       <DrawerOption name="Accounts" gotoAddress="Accounts" navigation={props.navigation} />
-//         //       <DrawerOption name="Settings" gotoAddress="Settings" navigation={props.navigation} />
-//         //       <DrawerOption name="About" gotoAddress="About" navigation={props.navigation} />
-//         //       <DrawerOption name="Logout" gotoAddress="Logout" navigation={props.navigation} />
-//         //     </ScrollView>
-//         //   </View>
-//         // ),
-//         contentComponent: (props) => (
-//           <View style={styles.container}>
-//             <DrawerHeader navigation={props.navigation} />
-//             <ScrollView >
-//               <DrawerItems
-//                 {...props}
-//                 activeTintColor="#6EBDF7"
-//                 activeBackgroundColor="#485159"
-//                 inactiveTintColor="white"
-//                 inactiveBackgroundColor="transparent"
-//                 labelStyle={{ margin: 15, alignItems: 'center', fontSize: 16, fontWeight: 'normal' }}
-//               />
-//             </ScrollView>
-//           </View>
-//         ),
-//       }
-//     ),
-//   },
-//   Stack: {
-//     screen: StackNavigator(Stack, {
-//       initialRouteName: 'Home',
-//       navigationOptions: StackNavigationOptions,
-//     }),
-//   },
-// },
-//   {
-//     headerMode: 'none',
-//   }
-// );
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     flexDirection: 'column',
-//     backgroundColor: Colors.drawerColor,
-//   },
-// })
+})

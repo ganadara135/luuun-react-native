@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, AsyncStorage, TouchableHighlight, Text } from 'react-native'
+import { View, StyleSheet, AsyncStorage, TouchableHighlight, Text, ActivityIndicator } from 'react-native'
 import UserInfoService from './../../services/userInfoService'
 import Transactions from './transactions'
 import Auth from './../../util/auth'
+import ResetNavigation from './../../util/resetNavigation'
 import Colors from './../../config/colors'
+import StellarService from './../../services/stellarService'
 import Header from './../../components/header'
 
 export default class Home extends Component {
@@ -16,6 +18,7 @@ export default class Home extends Component {
     this.state = {
       balance: 0,
       symbol: '',
+      ready: false,
     }
   }
 
@@ -25,15 +28,15 @@ export default class Home extends Component {
       if (token === null) {
         this.logout()
       }
-      return token
     }
     catch (error) {
     }
+
   }
 
   componentDidMount() {
-    this.getBalanceInfo()
     this.getUserInfo()
+    this.getBalanceInfo()
   }
 
   setBalance = (balance, divisibility) => {
@@ -49,6 +52,14 @@ export default class Home extends Component {
     if (responseJson.status === "success") {
       AsyncStorage.removeItem('user')
       AsyncStorage.setItem('user', JSON.stringify(responseJson.data))
+      let stellar_address = await StellarService.getAddress()
+      //console.log(stellar_address)
+      if (stellar_address.status === 'error') {
+        ResetNavigation.dispatchToSingleRoute(this.props.navigation, "SetUsername")
+      }
+      else {
+        this.setState({ ready: true })
+      }
     }
     else {
       this.logout()
@@ -56,7 +67,7 @@ export default class Home extends Component {
   }
 
   getBalanceInfo = async () => {
-    console.log("dhukse")
+    //console.log("dhukse")
     let responseJson = await UserInfoService.getActiveAccount()
     if (responseJson.status === "success") {
       const account = responseJson.data.results[0].currencies[0]
@@ -74,43 +85,62 @@ export default class Home extends Component {
   }
 
   render() {
-    return (
-      <View style={styles.container}>
-        <Header
-          navigation={this.props.navigation}
-          drawer
-        />
-        <View style={styles.balance}>
-          <View style={{ flexDirection: 'row' }}>
-            <Text style={{ fontSize: 25, color: 'white' }}>
-              {this.state.symbol}
-            </Text>
-            <Text style={{ paddingLeft: 5, fontSize: 40, color: 'white' }}>
-              {this.state.balance.toFixed(4).replace(/0{0,2}$/, "")}
-            </Text>
+    if (!this.state.ready) {
+      return (
+        <View style={styles.container}>
+          <Header
+            navigation={this.props.navigation}
+            drawer
+          />
+          <View style={styles.spinner}>
+            <ActivityIndicator
+              animating
+              style={{ height: 80 }}
+              size="large"
+            />
           </View>
         </View>
-        <View style={styles.transaction}>
-          <Transactions updateBalance={this.getBalanceInfo} logout={this.logout} />
-        </View>
-        <View style={styles.buttonbar} >
-          <TouchableHighlight
-            style={styles.submit}
-            onPress={() => this.props.navigation.navigate("Receive")}>
-            <Text style={{ color: 'white', fontSize: 20 }}>
-              Receive
+      )
+    }
+    else {
+      return (
+        <View style={styles.container}>
+          <Header
+            navigation={this.props.navigation}
+            drawer
+          />
+          <View style={styles.balance}>
+            <View style={{ flexDirection: 'row' }}>
+              <Text style={{ fontSize: 25, color: 'white' }}>
+                {this.state.symbol}
               </Text>
-          </TouchableHighlight>
-          <TouchableHighlight
-            style={styles.submit}
-            onPress={() => this.props.navigation.navigate("SendTo", { reference: "" })}>
-            <Text style={{ color: 'white', fontSize: 20 }}>
-              Send
-            </Text>
-          </TouchableHighlight>
+              <Text style={{ paddingLeft: 5, fontSize: 40, color: 'white' }}>
+                {this.state.balance.toFixed(4).replace(/0{0,2}$/, "")}
+              </Text>
+            </View>
+          </View>
+          <View style={styles.transaction}>
+            <Transactions updateBalance={this.getBalanceInfo} logout={this.logout} />
+          </View>
+          <View style={styles.buttonbar} >
+            <TouchableHighlight
+              style={styles.submit}
+              onPress={() => this.props.navigation.navigate("Receive")}>
+              <Text style={{ color: 'white', fontSize: 20 }}>
+                Receive
+                </Text>
+            </TouchableHighlight>
+            <TouchableHighlight
+              style={styles.submit}
+              onPress={() => this.props.navigation.navigate("SendTo", { reference: "" })}>
+              <Text style={{ color: 'white', fontSize: 20 }}>
+                Send
+              </Text>
+            </TouchableHighlight>
+          </View>
         </View>
-      </View>
-    )
+      )
+    }
   }
 }
 
@@ -141,6 +171,11 @@ const styles = StyleSheet.create({
     height: "100%",
     width: "50%",
     alignSelf: 'stretch',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  spinner: {
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },

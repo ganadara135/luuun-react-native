@@ -14,6 +14,7 @@ export default class QRcodeScanner extends Component {
     this.state = {
       camera: true,
       reference: "",
+      memo: "",
     }
   }
 
@@ -23,7 +24,7 @@ export default class QRcodeScanner extends Component {
   }
 
   goToSendTo = () => {
-    this.props.navigation.navigate("SendMoney", { reference: this.state.reference })
+    this.props.navigation.navigate("SendMoney", { reference: this.state.reference, memo: this.state.memo })
   }
 
   render() {
@@ -60,6 +61,11 @@ export default class QRcodeScanner extends Component {
               <Text style={styles.input}>
                 To: {this.state.reference}
               </Text>
+              {this.state.memo !== "" ?
+                <Text style={styles.input}>
+                  Memo: {this.state.memo}
+                </Text> : null
+              }
             </View>
             <View style={styles.footer}>
               <TouchableHighlight
@@ -84,7 +90,35 @@ export default class QRcodeScanner extends Component {
   }
 
   _handleBarCodeRead = (data) => {
-    this.setState({ camera: false, reference: data.data })
+    this.setState({ reference: "", memo: "" })
+
+    var str = data.data.replace(/ /g, "")
+
+    if (str.indexOf(":") === -1) {
+      this.setState({ camera: false, reference: str })
+    }
+    else {
+      var info = str.split(",")
+      if (info.length === 1) {
+        var ref = info[0].split(":")[1]
+        this.setState({ camera: false, reference: ref })
+      }
+      else {
+        var reference = ""
+        var memo = ""
+        info.forEach(function(node, index) {
+          var splittedInfo = node.split(":")
+          if (index === 0) {
+            reference = splittedInfo[1]
+          }
+          else if (splittedInfo[0] === "memo") {
+            memo = splittedInfo[1]
+          }
+        })
+
+        this.setState({ camera: false, reference, memo })
+      }
+    }
   }
 }
 
@@ -106,11 +140,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   input: {
-    height: 60,
     width: "100%",
-    padding: 10,
-    marginTop: 20,
-    borderColor: 'white',
-    borderWidth: 1,
+    padding: 15,
+    fontSize: 20,
   },
 })

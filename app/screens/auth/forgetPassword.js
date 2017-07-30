@@ -4,6 +4,7 @@ import AuthService from './../../services/authService'
 import TextInput from './../../components/textInput'
 import Colors from './../../config/colors'
 import Header from './../../components/header'
+import Constants from './../../config/constants'
 
 export default class ForgetPassword extends Component {
   static navigationOptions = {
@@ -14,7 +15,7 @@ export default class ForgetPassword extends Component {
     super(props)
     this.state = {
       email: '',
-      company: '',
+      company: Constants.company_id,
     }
   }
 
@@ -56,12 +57,6 @@ export default class ForgetPassword extends Component {
               autoCapitalize="none"
               keyboardType="email-address"
               onChangeText={(email) => this.setState({ email })}
-            />
-            <TextInput
-              title="Company"
-              placeholder="e.g rehive"
-              autoCapitalize="none"
-              onChangeText={(company) => this.setState({ company })}
             />
             <TouchableHighlight
               style={styles.submit}

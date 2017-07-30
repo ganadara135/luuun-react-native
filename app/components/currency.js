@@ -27,6 +27,7 @@ export default class Account extends Component {
   render() {
     return (
       <TouchableHighlight
+        underlayColor={'white'}
         style={styles.options} >
         <View style={styles.optionsElement}>
           <View style={styles.icon}>

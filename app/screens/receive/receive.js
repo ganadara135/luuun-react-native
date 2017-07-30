@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, Image, AsyncStorage } from 'react-native'
+import { View, Text, StyleSheet, Image, Clipboard, TouchableHighlight, Alert } from 'react-native'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import stellarService from './../../services/stellarService'
 import Colors from './../../config/colors'
 import Header from './../../components/header'
 
@@ -12,15 +14,30 @@ export default class Receive extends Component {
     super()
 
     this.state = {
-      imageURI: 'https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=undefined&choe=UTF-8',
+      cryptoAddress: {
+        qrCode: '',
+        address: '',
+        memo: '',
+        reference: '',
+      },
     }
   }
 
   async componentWillMount() {
-    const value = await AsyncStorage.getItem('user');
-    const user = JSON.parse(value)
-    const imageURI = 'https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=' + user.email + '&choe=UTF-8'
-    this.setState({ imageURI })
+    await this.getCryptoAddress()
+  }
+
+  getCryptoAddress = async () => {
+    const cryptoAddressResponse = await stellarService.getAddress()
+    //console.log(cryptoAddressResponse)
+    const {cryptoAddress} = this.state
+    cryptoAddress.qrCode = 'https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=' + cryptoAddressResponse.reference + '&choe=UTF-8'
+    cryptoAddress.address = cryptoAddressResponse.details.address
+    cryptoAddress.memo = cryptoAddressResponse.details.memo
+    cryptoAddress.reference = cryptoAddressResponse.reference
+
+    console.log(cryptoAddress)
+    this.setState({ cryptoAddress })
   }
 
   render() {
@@ -36,8 +53,53 @@ export default class Receive extends Component {
         </Text>
         <Image
           style={{ width: 300, height: 300 }}
-          source={{ uri: this.state.imageURI }}
+          source={{ uri: this.state.cryptoAddress.qrCode }}
         />
+        <Text style={styles.text}>
+          {this.state.cryptoAddress.reference}
+        </Text>
+        <View style={styles.boxed}>
+          <View style={styles.memoIcon}>
+            <Text style={styles.memoText}>
+              Memo: {this.state.cryptoAddress.memo}
+            </Text>
+            <TouchableHighlight
+              underlayColor={'white'}
+              onPress={() => {
+                Clipboard.setString(this.state.cryptoAddress.memo)
+                Alert.alert(
+                  null,
+                  'Copied',
+                )
+              }}>
+              <Icon
+                name="content-copy"
+                size={30}
+                color={Colors.black}
+              />
+            </TouchableHighlight>
+          </View>
+          <View style={styles.memoIcon}>
+            <Text style={[styles.memoText, {fontSize: 10}]}>
+              {this.state.cryptoAddress.address}
+            </Text>
+            <TouchableHighlight
+              underlayColor={'white'}
+              onPress={() => {
+                Clipboard.setString(this.state.cryptoAddress.address)
+                Alert.alert(
+                  null,
+                  'Copied',
+                )
+              }}>
+              <Icon
+                name="content-copy"
+                size={30}
+                color={Colors.black}
+              />
+            </TouchableHighlight>
+          </View>
+        </View>
       </View>
     )
   }
@@ -55,5 +117,24 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: Colors.black,
     padding: 20,
+  },
+  boxed: {
+    flexDirection: 'column',
+    padding: 5,
+    backgroundColor: Colors.lightgray,
+  },
+  memoText: {
+    flex: 1,
+    padding: 2,
+    fontSize: 14,
+    fontWeight: "bold",
+    color: Colors.black,
+  },
+  memoIcon: {
+    padding: 5,
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 })

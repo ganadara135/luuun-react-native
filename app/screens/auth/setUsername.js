@@ -1,39 +1,33 @@
 import React, { Component } from 'react'
-import { View, KeyboardAvoidingView, AsyncStorage, StyleSheet, TouchableHighlight, Text, Alert } from 'react-native'
-import SettingsService from './../../services/settingsService'
-import Auth from './../../util/auth'
+import { View, KeyboardAvoidingView, StyleSheet, TouchableHighlight, Text, Alert } from 'react-native'
+import StellarService from './../../services/stellarService'
+import ResetNavigation from './../../util/resetNavigation'
 import TextInput from './../../components/textInput'
 import Colors from './../../config/colors'
 import Header from './../../components/header'
 
-export default class AmountEntry extends Component {
+export default class SetUsername extends Component {
   static navigationOptions = {
-    title: 'Verify mobile number',
+    title: 'Set Username',
   }
 
   constructor(props) {
     super(props)
-    const params = this.props.navigation.state.params
     this.state = {
-      otp: '',
-      loginInfo: params.loginInfo,
+      username: '',
     }
-  }
-
-  reload = () => {
-    Auth.login(this.props.navigation, this.state.loginInfo)
   }
 
   verify = async () => {
-    await AsyncStorage.setItem("token", this.state.loginInfo.token)
-    let responseJson = await SettingsService.verifyMobile(this.state)
-
-    if (responseJson.status === "success") {
-      this.reload()
+    let response = await StellarService.setUsername(this.state.username)
+    let stellarResponse = await response.json()
+    console.log(stellarResponse)
+    if (stellarResponse.federated_address) {
+      ResetNavigation.dispatchToSingleRoute(this.props.navigation, "Home")
     }
     else {
       Alert.alert('Error',
-        responseJson.message,
+        stellarResponse.data[0],
         [{ text: 'OK' }])
     }
   }
@@ -43,31 +37,23 @@ export default class AmountEntry extends Component {
       <View style={{ flex: 1 }}>
         <Header
           navigation={this.props.navigation}
-          title="Verify mobile number"
+          title="Set Username"
         />
         <KeyboardAvoidingView style={styles.container} behavior={'padding'}>
           <View style={{ flex: 1 }}>
             <TextInput
-              title="Enter OTP"
-              placeholder="OTP"
+              title="Set a username"
+              placeholder="e.h. john_snow"
               autoCapitalize="none"
-              keyboardType="numeric"
-              onChangeText={(otp) => this.setState({ otp })}
+              onChangeText={(username) => this.setState({ username })}
             />
           </View>
           <View style={styles.buttons}>
             <TouchableHighlight
-              style={[styles.submit, { backgroundColor: Colors.red }]}
-              onPress={() => this.reload()}>
-              <Text style={{ color: 'white', fontSize: 20 }}>
-                Skip
-            </Text>
-            </TouchableHighlight>
-            <TouchableHighlight
               style={styles.submit}
               onPress={this.verify}>
               <Text style={{ color: 'white', fontSize: 20 }}>
-                Verify
+                Set
             </Text>
             </TouchableHighlight>
           </View>

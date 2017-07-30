@@ -1,13 +1,13 @@
 {
-  "name": "wallet",
+  "name": "luuun",
   "description": "A react native project",
-  "slug": "wallet",
+  "slug": "luuun",
   "privacy": "public",
   "sdkVersion": "17.0.0",
   "version": "1.0.0",
   "orientation": "portrait",
   "primaryColor": "#cccccc",
-  "icon": "./assets/icons/app.png",
+  "icon": "./assets/icons/leap.png",
   "loading": {
     "icon": "./assets/icons/loading.png",
     "hideExponentText": false
@@ -20,9 +20,9 @@
   },
   "ios": {
     "supportsTablet": true,
-    "bundleIdentifier": "com.rehive.wallet"
+    "bundleIdentifier": "com.luuun"
   },
   "android": {
-    "package": "com.rehive.wallet"
+    "package": "com.luuun"
   }
 }

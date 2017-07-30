@@ -22,6 +22,7 @@ export default class Settings extends Component {
           title="Get verified"
         />
         <TouchableHighlight
+          underlayColor={'white'}
           style={styles.options}
           underlayColor={'white'}
           onPress={() => this.goToDocument("ID Document")}>
@@ -39,6 +40,7 @@ export default class Settings extends Component {
           </View>
         </TouchableHighlight>
         <TouchableHighlight
+          underlayColor={'white'}
           style={styles.options}
           underlayColor={'white'}
           onPress={() => this.goToDocument("ID Selfie")}>
@@ -56,6 +58,7 @@ export default class Settings extends Component {
           </View>
         </TouchableHighlight>
         <TouchableHighlight
+          underlayColor={'white'}
           style={styles.options}
           underlayColor={'white'}
           onPress={() => this.goToDocument("Proof Of Address")}>

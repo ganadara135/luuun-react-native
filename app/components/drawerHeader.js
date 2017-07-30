@@ -10,6 +10,7 @@ export default class DrawerHeader extends Component {
     this.state = {
       userInfo: {},
     }
+    //this.getUserInfo()
   }
 
   componentWillMount() {
@@ -23,13 +24,13 @@ export default class DrawerHeader extends Component {
     return (
       <View style={styles.row}>
         <TouchableHighlight
-          underlayColor={'white'}
+          underlayColor={Colors.darkblue}
           style={styles.button}
           onPress={() => ResetNavigation.dispatchUnderDrawer(this.props.navigation, "Settings", 'SettingsPersonalDetails')}>
           {this.state.userInfo.profile ?
             <Image
               style={styles.stretch}
-              source={{ uri: this.state.userInfo.profile }}
+              source={{ uri: this.state.userInfo.profile, cache: 'only-if-cached' }}
             /> :
             <Image
               source={require('./../../assets/icons/profile_1.png')}

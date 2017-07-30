@@ -108,10 +108,10 @@ export default class Transactions extends Component {
               />
             }>
             <View style={{ marginTop: 10, flexDirection: 'column', backgroundColor: 'white', padding: 20 }}>
-              <Text style={{ fontSize: 30, fontWeight: 'normal', color: Colors.black }}>
+              <Text style={{ fontSize: 24, fontWeight: 'normal', color: Colors.black }}>
                 Welcome to {this.state.company.name}
               </Text>
-              <Text style={{ paddingTop: 15, fontSize: 18, fontWeight: 'normal', color: Colors.black, textAlign: 'justify' }}>
+              <Text style={{ paddingTop: 15, fontSize: 18, fontWeight: 'normal', color: Colors.black }}>
                 Please verify your email address to redeem any unclaimed transactions. Pull to refresh your balance.
             </Text>
             </View>
@@ -127,7 +127,7 @@ export default class Transactions extends Component {
             renderItem={({ item }) => (
               <ListItem
                 avatar={item.user.profile || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgmT5tM-IGcFDpqZ87p9zKGaWQuzpvAcDKfOTPYfx5A9zOmbTh8RMMFg'}
-                title={item.label}
+                title={item.tx_type == 'credit' ? "Received" : "Sent"}
                 subtitle={moment(item.created).fromNow()}
                 rightTitle={`${item.currency.symbol}${this.getAmount(item.amount, item.currency.divisibility)}`}
                 rightTitleStyle={{ 'color': '#bdc6cf' }}

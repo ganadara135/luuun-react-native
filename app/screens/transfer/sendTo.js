@@ -96,7 +96,7 @@ export default class SendTo extends Component {
       this.setState({ reference: this.state.searchText })
     }
 
-    this.props.navigation.navigate("SendMoney", { reference: this.state.searchText })
+    this.props.navigation.navigate("SendMoney", { reference: this.state.searchText, memo: "" })
   }
 
   goToBarcodeScanner = () => {
@@ -124,7 +124,7 @@ export default class SendTo extends Component {
               <View style={styles.spinner}>
                 <Text>
                   Loading Contacts
-              </Text>
+                </Text>
                 <ActivityIndicator
                   animating
                   style={{ height: 80 }}

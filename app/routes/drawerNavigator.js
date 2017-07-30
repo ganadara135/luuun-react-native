@@ -47,7 +47,7 @@ export default DrawerNavigator(RouteConfigs, {
       <ScrollView>
         <DrawerItems
           {...props}
-          activeTintColor="#6EBDF7"
+          activeTintColor="#01C68B"
           activeBackgroundColor="#485159"
           inactiveTintColor="white"
           inactiveBackgroundColor="transparent"

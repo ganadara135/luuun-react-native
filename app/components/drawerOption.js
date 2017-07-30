@@ -6,6 +6,7 @@ export default class Options extends Component {
   render() {
     return (
       <TouchableHighlight
+        underlayColor={'white'}
         style={styles.options}
         onPress={() => this.props.navigation.navigate(this.props.gotoAddress)}>
         <Text style={{fontSize: 18, color: 'white', fontWeight: 'normal' }}>

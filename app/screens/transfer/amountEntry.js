@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { View, ScrollView, KeyboardAvoidingView, AsyncStorage, StyleSheet, TouchableHighlight, Text, Alert } from 'react-native'
+import stellarService from './../../services/stellarService'
 import TransactionService from './../../services/transactionService'
 import ResetNavigation from './../../util/resetNavigation'
 import TextInput from './../../components/textInput'
@@ -18,7 +19,7 @@ export default class AmountEntry extends Component {
     this.state = {
       reference: params.reference,
       amount: 0,
-      note: '',
+      memo: params.memo,
     }
   }
 
@@ -37,6 +38,7 @@ export default class AmountEntry extends Component {
       for (let i = 0; i < currency.divisibility; i++) {
         amount = amount * 10
       }
+      amount = parseInt(amount, 10)
       Alert.alert(
         'Are you sure?',
         'Send ' + currency.symbol + this.state.amount + ' to ' + this.state.reference,
@@ -49,15 +51,15 @@ export default class AmountEntry extends Component {
   }
 
   transferConfirmed = async (amount) => {
-    let responseJson = await TransactionService.sendMoney(amount, this.state.reference, this.state.note)
-    if (responseJson.status === "success") {
+    let responseJson = await stellarService.sendMoney(amount, this.state.memo, this.state.reference, 'XLM', 'default')
+    if (responseJson.status === 201) {
       Alert.alert('Success',
         "Transaction successful",
         [{ text: 'OK', onPress: () => ResetNavigation.dispatchToSingleRoute(this.props.navigation, "Home") }])
     }
     else {
       Alert.alert('Error',
-        responseJson.message,
+        "Transaction failed",
         [{ text: 'OK' }])
     }
   }
@@ -90,10 +92,11 @@ export default class AmountEntry extends Component {
               onChangeText={this.amountChanged}
             />
             <TextInput
-              title="Note"
-              placeholder="Enter note here"
+              title="Memo"
+              placeholder="Enter memo here"
               autoCapitalize="none"
-              onChangeText={(note) => this.setState({ note })}
+              value={this.state.memo}
+              onChangeText={(memo) => this.setState({ memo })}
             />
           </ScrollView>
           <TouchableHighlight
