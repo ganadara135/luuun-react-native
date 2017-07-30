@@ -10,7 +10,6 @@ export default class DrawerHeader extends Component {
     this.state = {
       userInfo: {},
     }
-
     //this.getUserInfo()
   }
 
