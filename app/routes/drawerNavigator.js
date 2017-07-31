@@ -16,9 +16,6 @@ const RouteConfigs = {
   Home: {
     screen: Home,
   },
-  Withdraw: {
-    screen: Withdraw,
-  },
   Send: {
     screen: SendTo,
   },
