@@ -2,9 +2,7 @@ import React from 'react'
 import { ScrollView, View, StyleSheet } from 'react-native'
 import { DrawerNavigator, DrawerItems } from 'react-navigation'
 import Home from './../screens/home/home'
-import Deposit from './../screens/deposit/deposit'
 import Settings from './../screens/settings/settings'
-import Withdraw from './../screens/withdraw/withdraw'
 import About from './../screens/about/about'
 import Accounts from './../screens/accounts/accounts'
 import Receive from './../screens/receive/receive'
@@ -15,12 +13,6 @@ import Colors from './../config/colors'
 const RouteConfigs = {
   Home: {
     screen: Home,
-  },
-  Deposit: {
-    screen: Deposit,
-  },
-  Withdraw: {
-    screen: Withdraw,
   },
   Receive: {
     screen: Receive,

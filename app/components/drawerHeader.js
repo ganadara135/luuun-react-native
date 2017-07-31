@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginTop: 55,
     marginLeft: 15,
-    //marginBottom: 15,
+    marginBottom: 15,
   },
   col: {
     flexDirection: "column",

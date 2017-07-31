@@ -152,7 +152,7 @@ export default class SendTo extends Component {
             <View style={{ flex: 1 }}>
               <TextInput
                 title="Recipient"
-                placeholder="Enter name/email/mobile"
+                placeholder="Enter email, stellar address or mobile"
                 autoCapitalize="none"
                 value={this.state.searchText}
                 onChange={this.searchTextChanged.bind(this)}
