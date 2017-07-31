@@ -15,11 +15,11 @@ export default class SendTo extends Component {
 
   constructor(props) {
     super(props)
-    const params = this.props.navigation.state.params
+    
     this.state = {
       ready: false,
-      reference: params.reference,
-      searchText: params.reference,
+      reference: "",
+      searchText: "",
       data: [],
       contacts: new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 }),
     }
