@@ -10,7 +10,7 @@ import Header from './../../components/header'
 
 export default class SendTo extends Component {
   static navigationOptions = ({ navigation }) => ({
-    title: 'To',
+    title: 'Send',
   })
 
   constructor(props) {
