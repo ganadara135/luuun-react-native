@@ -22,7 +22,6 @@ export default class Security extends Component {
         />
         <Option name="Change password" gotoAddress="ChangePassword" goTo={this.goTo} />
         <Option name="Two factor" gotoAddress="TwoFactor" goTo={this.goTo} />
-        <Option name="Pin" gotoAddress="null" goTo={this.goTo} />
       </View>
     )
   }

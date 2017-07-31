@@ -5,6 +5,7 @@ import Home from './../screens/home/home'
 import Settings from './../screens/settings/settings'
 import About from './../screens/about/about'
 import Accounts from './../screens/accounts/accounts'
+import SendTo from './../screens/transfer/sendTo'
 import Receive from './../screens/receive/receive'
 import Logout from './../screens/auth/logout'
 import DrawerHeader from './../components/drawerHeader'
@@ -13,6 +14,9 @@ import Colors from './../config/colors'
 const RouteConfigs = {
   Home: {
     screen: Home,
+  },
+  Send: {
+    screen: SendTo,
   },
   Receive: {
     screen: Receive,

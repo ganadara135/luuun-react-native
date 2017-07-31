@@ -7,7 +7,6 @@ import AuthVerifyMobile from './../screens/auth/verifyMobile'
 import SetUsername from './../screens/auth/setUsername'
 import ForgetPassword from './../screens/auth/forgetPassword'
 import SendMoney from './../screens/transfer/amountEntry'
-import SendTo from './../screens/transfer/sendTo'
 import QRcodeScanner from './../screens/transfer/qrcodeScanner'
 import AccountCurrencies from './../screens/accounts/accountCurrencies'
 import UploadImage from './../screens/settings/profileImage/uploadImage'
@@ -49,9 +48,6 @@ const Stack = {
   },
   SendMoney: {
     screen: SendMoney,
-  },
-  SendTo: {
-    screen: SendTo,
   },
   QRcodeScanner: {
     screen: QRcodeScanner,
