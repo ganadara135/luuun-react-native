@@ -1,4 +1,8 @@
-# wallet-react-native
+# Luuun wallet | React Native
+
+Try out the demo on Android or iOS here:
+https://expo.io/@luuun/luuun
+(first install Expo on your phone)
 
 ## Prerequisites
 
@@ -15,7 +19,7 @@
 * follow one of the following steps
 
 
-** *before this make sure port 19000 and 19001 is open in your operating system*
+** *before this make sure ports 19000 and 19001 are open*
 
 ### Run using command line
 
