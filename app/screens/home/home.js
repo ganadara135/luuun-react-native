@@ -28,15 +28,14 @@ export default class Home extends Component {
       if (token === null) {
         this.logout()
       }
+      else {
+        this.getUserInfo()
+        this.getBalanceInfo()
+      }
     }
     catch (error) {
     }
 
-  }
-
-  componentDidMount() {
-    this.getUserInfo()
-    this.getBalanceInfo()
   }
 
   setBalance = (balance, divisibility) => {
@@ -60,6 +59,7 @@ export default class Home extends Component {
       else {
         this.setState({ ready: true })
       }
+      //this.setState({ ready: true })
     }
     else {
       this.logout()
@@ -132,7 +132,7 @@ export default class Home extends Component {
             </TouchableHighlight>
             <TouchableHighlight
               style={styles.submit}
-              onPress={() => this.props.navigation.navigate("SendTo", { reference: "" })}>
+              onPress={() => this.props.navigation.navigate("Send", { reference: "" })}>
               <Text style={{ color: 'white', fontSize: 20 }}>
                 Send
               </Text>

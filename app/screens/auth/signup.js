@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { View, Alert, StyleSheet, ScrollView, TouchableHighlight, Text, KeyboardAvoidingView } from 'react-native'
 import AuthService from './../../services/authService'
+import Auth from './../../util/auth'
 import TextInput from './../../components/textInput'
-import MobileInput from './../../components/mobileNumberInput'
 import Colors from './../../config/colors'
 import Constants from './../../config/constants'
 import Header from './../../components/header'
@@ -18,7 +18,6 @@ export default class Signup extends Component {
       first_name: '',
       last_name: '',
       email: '',
-      mobile: '+1',
       company: Constants.company_id,
       password1: '',
       password2: '',
@@ -33,7 +32,7 @@ export default class Signup extends Component {
     let responseJson = await AuthService.signup(this.state)
     if (responseJson.status === "success") {
       const loginInfo = responseJson.data
-      this.props.navigation.navigate("AuthVerifyMobile", { loginInfo })
+      Auth.login(this.props.navigation, loginInfo)
     }
     else {
       Alert.alert('Error',
@@ -72,15 +71,6 @@ export default class Signup extends Component {
                 autoCapitalize="none"
                 keyboardType="email-address"
                 onChangeText={(email) => this.setState({ email })}
-              />
-              <MobileInput
-                style={styles.input}
-                title="Mobile number"
-                autoCapitalize="none"
-                keyboardType="numeric"
-                value={this.state.mobile}
-                onChangeText={(mobile) => this.setState({ mobile })}
-                changeCountryCode={this.changeCountryCode}
               />
               <TextInput
                 title="Password"

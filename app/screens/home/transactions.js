@@ -10,6 +10,7 @@ import {
 import { ListItem } from "react-native-elements"
 import TransactionService from './../../services/transactionService'
 import UserInfoService from './../../services/userInfoService'
+import SettingsService from './../../services/settingsService'
 import Colors from './../../config/colors'
 
 export default class Transactions extends Component {
@@ -18,6 +19,7 @@ export default class Transactions extends Component {
 
     this.state = {
       noTransaction: false,
+      verified: true,
       loading: false,
       data: [],
       nextUrl: null,
@@ -46,15 +48,30 @@ export default class Transactions extends Component {
 
     if (this.state.data.length === 0) {
       let responseJson = await UserInfoService.getCompany()
-      if (responseJson.status === "success") {
-        this.setState({
-          company: responseJson.data,
+      let responseEmails = await SettingsService.getAllEmails()
+      if (responseJson.status === "success" && responseEmails.status === "success") {
+        let emails = responseEmails.data
+        let verified = emails.filter(function(node) {
+          return node.verified === true
         })
+        if (verified.length !== 0) {
+          this.setState({
+            company: responseJson.data,
+            noTransaction: true,
+            verified: true,
+          })
+        }
+        else {
+          this.setState({
+            company: responseJson.data,
+            noTransaction: true,
+            verified: false,
+          })
+        }
       }
       else {
         this.props.logout()
       }
-      this.setState({ noTransaction: true })
     }
   }
 
@@ -112,7 +129,7 @@ export default class Transactions extends Component {
                 Welcome to {this.state.company.name}
               </Text>
               <Text style={{ paddingTop: 15, fontSize: 18, fontWeight: 'normal', color: Colors.black }}>
-                Please verify your email address to redeem any unclaimed transactions. Pull to refresh your balance.
+                {this.state.verified ? null : "Please verify your email address to redeem any unclaimed transactions."} Pull to refresh your balance.
             </Text>
             </View>
           </ScrollView>
@@ -127,7 +144,7 @@ export default class Transactions extends Component {
             renderItem={({ item }) => (
               <ListItem
                 avatar={item.user.profile || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgmT5tM-IGcFDpqZ87p9zKGaWQuzpvAcDKfOTPYfx5A9zOmbTh8RMMFg'}
-                title={item.tx_type == 'credit' ? "Received" : "Sent"}
+                title={item.tx_type === 'credit' ? "Received" : "Sent"}
                 subtitle={moment(item.created).fromNow()}
                 rightTitle={`${item.currency.symbol}${this.getAmount(item.amount, item.currency.divisibility)}`}
                 rightTitleStyle={{ 'color': '#bdc6cf' }}
