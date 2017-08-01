@@ -1,12 +1,10 @@
 {
   "name": "luuun",
-  "description": "A react native project",
+  "description": "Digital wallet for storing lumens and digital currencies on the stellar network",
   "slug": "luuun",
   "privacy": "public",
   "sdkVersion": "17.0.0",
-  "version": "1.0.0",
-  "orientation": "portrait",
-  "primaryColor": "#cccccc",
+  "version": "1.0.1",
   "icon": "./assets/icons/leap.png",
   "loading": {
     "icon": "./assets/icons/loading.png",
@@ -23,6 +21,7 @@
     "bundleIdentifier": "com.luuun"
   },
   "android": {
+    "versionCode": 2,
     "package": "com.luuun"
   }
 }
