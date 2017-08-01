@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, KeyboardAvoidingView, StyleSheet, AsyncStorage, TouchableHighlight, Text, Alert, ListView, ActivityIndicator } from 'react-native'
+import { View, KeyboardAvoidingView, StyleSheet, AsyncStorage, RefreshControl, TouchableHighlight, Text, Alert, ListView, ActivityIndicator } from 'react-native'
 import Contact from './../../components/contact'
 import TextInput from './../../components/textInput'
 import ContactService from './../../services/contactService'
@@ -15,9 +15,9 @@ export default class SendTo extends Component {
 
   constructor(props) {
     super(props)
-    
     this.state = {
       ready: false,
+      refreshing:false,
       reference: "",
       searchText: "",
       data: [],
@@ -38,14 +38,37 @@ export default class SendTo extends Component {
   }
 
   showContactsAsync = async () => {
-    // Ask for permission to query contacts.
-    let data = await ContactService.getAllContacts()
+    if (this.state.ready === false) {
+      let contacts = await AsyncStorage.getItem('contacts')
+      if (contacts) {
+        let data = JSON.parse(contacts)
+        this.setState({
+          ready: true,
+          data,
+          contacts: this.state.contacts.cloneWithRows(data),
+        })
+      }
+      else {
+        this.refreshContactsAsync()
+      }
+    }
+    else {
+      this.setState({refreshing:true})
+      this.refreshContactsAsync()
+    }
+  }
 
+  refreshContactsAsync = async () => {
+    let data = await ContactService.getAllContacts()
     this.setState({
+      refreshing: false,
       ready: true,
       data,
       contacts: this.state.contacts.cloneWithRows(data),
     })
+
+    await AsyncStorage.removeItem('contacts')
+    await AsyncStorage.setItem("contacts", JSON.stringify(data))
   }
 
   selectAContact = (contact) => {
@@ -119,7 +142,8 @@ export default class SendTo extends Component {
           <KeyboardAvoidingView style={styles.container} behavior={'padding'} keyboardVerticalOffset={75}>
             <View style={{ flex: 1 }}>
               <TextInput
-                title="Enter name/email/mobile"
+                title="Recipient"
+                placeholder="Enter email, stellar address or mobile"
                 autoCapitalize="none"
                 value={this.state.searchText}
                 onChange={this.searchTextChanged.bind(this)}
@@ -159,6 +183,7 @@ export default class SendTo extends Component {
               />
               <View style={{ flex: 1 }}>
                 <ListView
+                  refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this.showContactsAsync.bind(this)} />}
                   dataSource={this.state.contacts}
                   enableEmptySections
                   renderRow={(rowData) => <Contact selected={this.selectAContact} rowData={rowData} />}
