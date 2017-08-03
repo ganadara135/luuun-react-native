@@ -1,6 +1,7 @@
 import { AsyncStorage, Alert } from 'react-native'
 
-const baseUrl = 'https://rehive.com/services/crypto/'
+import Constants from './../config/constants'
+const baseUrl = Constants.stellar_service_url
 
 let getHeaders = async () => {
   const token = await AsyncStorage.getItem('token')
