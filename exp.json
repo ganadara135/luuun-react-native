@@ -4,11 +4,11 @@
   "slug": "luuun",
   "privacy": "public",
   "sdkVersion": "17.0.0",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "icon": "./assets/icons/leap.png",
   "loading": {
     "icon": "./assets/icons/loading.png",
-    "hideExponentText": false
+    "hideExponentText": true
   },
   "packagerOpts": {
     "assetExts": [
@@ -21,7 +21,7 @@
     "bundleIdentifier": "com.luuun"
   },
   "android": {
-    "versionCode": 2,
+    "versionCode": 3,
     "package": "com.luuun"
   }
 }
