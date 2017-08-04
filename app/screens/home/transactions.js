@@ -151,6 +151,9 @@ export default class Transactions extends Component {
                 rightTitleStyle={{ 'color': '#bdc6cf' }}
                 hideChevron
                 roundAvatar
+                onPress={() => {
+                  this.props.showDialog(item)
+                }}
               //containerStyle={{'backgroundColor':'#FAFBFC'}}
               />
             )}
