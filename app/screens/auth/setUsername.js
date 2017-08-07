@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, KeyboardAvoidingView, StyleSheet, TouchableHighlight, Text, Alert } from 'react-native'
+import { View, KeyboardAvoidingView, StyleSheet, AsyncStorage, TouchableHighlight, Text, Alert } from 'react-native'
 import StellarService from './../../services/stellarService'
 import ResetNavigation from './../../util/resetNavigation'
 import TextInput from './../../components/textInput'
@@ -15,6 +15,21 @@ export default class SetUsername extends Component {
     super(props)
     this.state = {
       username: '',
+    }
+  }
+
+  async componentWillMount() {
+     try {
+      const token = await AsyncStorage.getItem('token')
+      if (token === null) {
+        this.logout()
+      }
+      else {
+        this.getUserInfo()
+        this.getBalanceInfo()
+      }
+    }
+    catch (error) {
     }
   }
 

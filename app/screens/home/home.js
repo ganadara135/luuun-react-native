@@ -67,7 +67,7 @@ export default class Home extends Component {
       //this.setState({ ready: true })
     }
     else {
-      this.logout()
+      await this.logout()
     }
   }
 
