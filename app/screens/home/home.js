@@ -56,13 +56,19 @@ export default class Home extends Component {
     if (responseJson.status === "success") {
       AsyncStorage.removeItem('user')
       AsyncStorage.setItem('user', JSON.stringify(responseJson.data))
-      let stellar_address = await StellarService.getAddress()
-      //console.log(stellar_address)
-      if (stellar_address.status === 'error') {
-        ResetNavigation.dispatchToSingleRoute(this.props.navigation, "SetUsername")
+      const token = await AsyncStorage.getItem('token')
+      if (token === null) {
+        await this.logout()
       }
       else {
-        this.setState({ ready: true })
+        let stellar_address = await StellarService.getAddress()
+        //console.log(stellar_address)
+        if (stellar_address.status === 'error') {
+          ResetNavigation.dispatchToSingleRoute(this.props.navigation, "SetUsername")
+        }
+        else {
+          this.setState({ ready: true })
+        }
       }
       //this.setState({ ready: true })
     }
