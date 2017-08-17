@@ -5,6 +5,7 @@ import ResetNavigation from './../../util/resetNavigation'
 import TextInput from './../../components/textInput'
 import Colors from './../../config/colors'
 import Header from './../../components/header'
+import Auth from './../../util/auth'
 
 export default class SetUsername extends Component {
   static navigationOptions = {
@@ -22,11 +23,7 @@ export default class SetUsername extends Component {
      try {
       const token = await AsyncStorage.getItem('token')
       if (token === null) {
-        this.logout()
-      }
-      else {
-        this.getUserInfo()
-        this.getBalanceInfo()
+        Auth.logout(this.props.navigation)
       }
     }
     catch (error) {
@@ -35,6 +32,11 @@ export default class SetUsername extends Component {
 
   verify = async () => {
     let response = await StellarService.setUsername(this.state.username)
+    if (response.status === 403) {
+        await AsyncStorage.removeItem("token")
+        await AsyncStorage.removeItem("user")
+        Auth.logout(this.props.navigation)
+    }
     let stellarResponse = await response.json()
     console.log(stellarResponse)
     if (stellarResponse.federated_address) {
