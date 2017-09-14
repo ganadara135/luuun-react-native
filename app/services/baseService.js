@@ -47,7 +47,7 @@ let _apiCallWithoutData = async (url, method) => {
       credentials: 'omit',
     })
     let responseJson = await response.json()
-    console.log(response)
+    //console.log(response)
     if (response.status === 403) {
       await AsyncStorage.removeItem("token")
       return { status: "error" }

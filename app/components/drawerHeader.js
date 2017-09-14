@@ -15,7 +15,8 @@ export default class DrawerHeader extends Component {
   }
 
   async componentWillMount() {
-    const value = AsyncStorage.getItem('user');
+    const value = await AsyncStorage.getItem('user');
+    console.log(value)
     if (value === null) {
       Auth.logout(this.props.navigation)
     }

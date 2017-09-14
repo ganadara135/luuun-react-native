@@ -32,6 +32,7 @@ export default class SetUsername extends Component {
 
   verify = async () => {
     let response = await StellarService.setUsername(this.state.username)
+    console.log(response)
     if (response.status === 403) {
         await AsyncStorage.removeItem("token")
         await AsyncStorage.removeItem("user")

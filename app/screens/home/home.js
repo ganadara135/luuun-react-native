@@ -62,7 +62,6 @@ export default class Home extends Component {
       }
       else {
         let stellar_address = await StellarService.getAddress()
-        //console.log(stellar_address)
         if (stellar_address.status === 'error') {
           ResetNavigation.dispatchToSingleRoute(this.props.navigation, "SetUsername")
         }
