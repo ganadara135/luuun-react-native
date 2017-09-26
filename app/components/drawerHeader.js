@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, StyleSheet, AsyncStorage, TouchableHighlight, Image, Text } from 'react-native';
 import Colors from './../config/colors'
 import ResetNavigation from './../util/resetNavigation'
+import Auth from './../util/auth'
 
 export default class DrawerHeader extends Component {
   constructor(props) {
@@ -13,10 +14,15 @@ export default class DrawerHeader extends Component {
     //this.getUserInfo()
   }
 
-  componentWillMount() {
-    AsyncStorage.getItem('user').then((value) => {
-      this.setState({ 'userInfo': JSON.parse(value) || {} });
-    })
+  async componentWillMount() {
+    const value = await AsyncStorage.getItem('user');
+    console.log(value)
+    if (value === null) {
+      Auth.logout(this.props.navigation)
+    }
+    else {
+      this.setState({ 'userInfo': JSON.parse(value) || {} })
+    }
   }
 
   render() {

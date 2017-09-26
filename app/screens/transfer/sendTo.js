@@ -31,6 +31,10 @@ export default class SendTo extends Component {
     if (responseJson.status === "success") {
       AsyncStorage.removeItem('user')
       AsyncStorage.setItem('user', JSON.stringify(responseJson.data))
+      const token = await AsyncStorage.getItem('token')
+      if (token === null) {
+        Auth.logout(this.props.navigation)
+      }
     }
     else {
       Auth.logout(this.props.navigation)

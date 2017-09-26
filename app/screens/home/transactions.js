@@ -39,6 +39,7 @@ export default class Transactions extends Component {
       const data = this.state.data.concat(responseJson.data.results)
       this.setState({
         data,
+        noTransaction: false,
         nextUrl: responseJson.data.next,
       })
     }
@@ -150,6 +151,9 @@ export default class Transactions extends Component {
                 rightTitleStyle={{ 'color': '#bdc6cf' }}
                 hideChevron
                 roundAvatar
+                onPress={() => {
+                  this.props.showDialog(item)
+                }}
               //containerStyle={{'backgroundColor':'#FAFBFC'}}
               />
             )}
