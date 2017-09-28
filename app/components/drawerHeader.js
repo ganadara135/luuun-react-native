@@ -11,10 +11,10 @@ export default class DrawerHeader extends Component {
     this.state = {
       userInfo: {},
     }
-    //this.getUserInfo()
+    this.getUserInfo()
   }
 
-  async componentWillMount() {
+  getUserInfo = async () => {
     const value = await AsyncStorage.getItem('user');
     console.log(value)
     if (value === null) {
