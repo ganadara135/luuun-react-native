@@ -32,7 +32,8 @@ export default class SetUsername extends Component {
 
   verify = async () => {
     let response = await StellarService.setUsername(this.state.username)
-    if (response.status === 403) {
+    console.log(response)
+    if (response.status === 403 || response.status === 401) {
         await AsyncStorage.removeItem("token")
         await AsyncStorage.removeItem("user")
         Auth.logout(this.props.navigation)
