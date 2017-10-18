@@ -77,7 +77,6 @@ export default class Home extends Component {
   }
 
   getBalanceInfo = async () => {
-    //console.log("dhukse")
     let responseJson = await UserInfoService.getActiveAccount()
     if (responseJson.status === "success") {
       const account = responseJson.data.results[0].currencies[0]

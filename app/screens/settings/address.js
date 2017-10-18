@@ -30,7 +30,6 @@ export default class Address extends Component {
 
   getAddress = async () => {
     let responseJson = await UserInfoService.getAddress()
-    console.log(responseJson)
     if (responseJson.status === "success") {
       const address = responseJson.data
       this.setState({
@@ -51,7 +50,6 @@ export default class Address extends Component {
 
   save = async () => {
     let responseJson = await UserInfoService.updateAddress(this.state)
-    //console.log(responseJson)
     if (responseJson.status === "success") {
       this.props.navigation.goBack()
     }

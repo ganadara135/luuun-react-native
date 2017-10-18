@@ -31,7 +31,6 @@ export default class Transactions extends Component {
 
   componentDidMount() {
     this.getData()
-    console.log(this.state.data)
   }
 
   setData = async (responseJson) => {
@@ -96,8 +95,6 @@ export default class Transactions extends Component {
 
 
   handleLoadMore = async () => {
-    // console.log('loadmore')
-    // console.log(this.state.nextUrl)
     if (this.state.refreshing !== true && this.state.loading !== true && this.state.nextUrl) {
       this.setState({ 'loading': true })
       let responseJson = await TransactionService.getNextTransactions(this.state.nextUrl)

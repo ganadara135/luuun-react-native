@@ -32,7 +32,6 @@ export default class Settings extends Component {
     if (responseJson.status === "success") {
       const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => JSON.stringify(r1) !== JSON.stringify(r2) });
       const data = responseJson.data;
-      //console.log(data)
       let ids = data.map((obj, index) => index);
       this.setState({
         refreshing: false,

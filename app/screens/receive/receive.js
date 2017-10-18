@@ -29,14 +29,11 @@ export default class Receive extends Component {
 
   getCryptoAddress = async () => {
     const cryptoAddressResponse = await stellarService.getAddress()
-    //console.log(cryptoAddressResponse)
     const {cryptoAddress} = this.state
     cryptoAddress.qrCode = 'https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=' + cryptoAddressResponse.reference + '&choe=UTF-8'
     cryptoAddress.address = cryptoAddressResponse.details.address
     cryptoAddress.memo = cryptoAddressResponse.details.memo
     cryptoAddress.reference = cryptoAddressResponse.reference
-
-    console.log(cryptoAddress)
     this.setState({ cryptoAddress })
   }
 
