@@ -77,13 +77,13 @@ export default class Home extends Component {
   }
 
   getBalanceInfo = async () => {
-    //console.log("dhukse")
     let responseJson = await UserInfoService.getActiveAccount()
     if (responseJson.status === "success") {
       const account = responseJson.data.results[0].currencies[0]
+      console.log(account)
       AsyncStorage.setItem('currency', JSON.stringify(account.currency))
       this.setState({ symbol: account.currency.symbol })
-      this.setState({ balance: this.setBalance(account.balance, account.currency.divisibility) })
+      this.setState({ balance: this.setBalance(account.available_balance, account.currency.divisibility) })
     }
     else {
       this.logout()
