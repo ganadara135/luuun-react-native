@@ -11,7 +11,7 @@ export default class Account extends Component {
         this.state = {
             offline: false,
             online:false,
-            firstTime: true
+            firstTime: true,
         }
     }
 
@@ -53,10 +53,26 @@ export default class Account extends Component {
         return (
             <View style={{paddingTop: Expo.Constants.statusBarHeight, backgroundColor:Colors.lightblue}}>
                 {
-                    this.props.transactionSwitch === false &&
+                    this.props.creditSwitch === false && this.props.debitSwitch === true &&
                      <View style={{paddingVertical:4, paddingHorizontal: 20, backgroundColor:Colors.red, justifyContent:'center',alignItems:'center'}}>
                         <Text style={{color:'white', textAlign: 'center'}}>
-                            Your account is disabled for that account.
+                            Deposits are temporarily disabled.
+                        </Text>
+                    </View>
+                }
+                {
+                    this.props.debitSwitch === false && this.props.creditSwitch === true &&
+                     <View style={{paddingVertical:4, paddingHorizontal: 20, backgroundColor:Colors.red, justifyContent:'center',alignItems:'center'}}>
+                        <Text style={{color:'white', textAlign: 'center'}}>
+                            Withdrawals are temporarily disabled.
+                        </Text>
+                    </View>
+                }
+                {
+                    this.props.debitSwitch === false && this.props.creditSwitch === false &&
+                     <View style={{paddingVertical:4, paddingHorizontal: 20, backgroundColor:Colors.red, justifyContent:'center',alignItems:'center'}}>
+                        <Text style={{color:'white', textAlign: 'center'}}>
+                            Transactions are temporarily disabled.
                         </Text>
                     </View>
                 }
