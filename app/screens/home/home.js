@@ -58,7 +58,6 @@ export default class Home extends Component {
     if (responseJson.status === "success") {
       AsyncStorage.removeItem('user')
       AsyncStorage.setItem('user', JSON.stringify(responseJson.data))
-      const token = await AsyncStorage.getItem('token')
       let switches = responseJson.data.switches
       let creditSwitches = switches.filter(word => word.tx_type === 'credit')
       if (creditSwitches.length > 0) {
@@ -78,6 +77,7 @@ export default class Home extends Component {
           })
         }
       }
+      const token = await AsyncStorage.getItem('token')
       if (token === null) {
         await this.logout()
       }
