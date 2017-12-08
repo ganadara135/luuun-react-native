@@ -24,6 +24,7 @@ export default class Home extends Component {
       dataToShow: {
         currency: {},
       },
+      transactionSwitch: true,
     }
   }
 
@@ -57,6 +58,16 @@ export default class Home extends Component {
       AsyncStorage.removeItem('user')
       AsyncStorage.setItem('user', JSON.stringify(responseJson.data))
       const token = await AsyncStorage.getItem('token')
+      let switches = responseJson.data.switches
+      switches = switches.filter(word => word.tx_type === 'credit')
+      if (switches.length > 0) {
+          let creditSwitch = switches[0]
+          if (!creditSwitch.enabled) {
+              this.setState({
+                  transactionSwitch: false,
+              })
+          }
+      }
       if (token === null) {
         await this.logout()
       }
@@ -79,8 +90,17 @@ export default class Home extends Component {
   getBalanceInfo = async () => {
     let responseJson = await UserInfoService.getActiveAccount()
     if (responseJson.status === "success") {
-      const account = responseJson.data.results[0].currencies[0]
-      console.log(account)
+      let account = responseJson.data.results[0].currencies[0]
+      let switches = account.switches
+      switches = switches.filter(word => word.tx_type === 'credit')
+      if (switches.length > 0) {
+          let creditSwitch = switches[0]
+          if (!creditSwitch.enabled) {
+              this.setState({
+                  transactionSwitch: false,
+              })
+          }
+      }
       AsyncStorage.setItem('currency', JSON.stringify(account.currency))
       this.setState({ symbol: account.currency.symbol })
       this.setState({ balance: this.setBalance(account.available_balance, account.currency.divisibility) })
@@ -114,6 +134,7 @@ export default class Home extends Component {
           <Header
             navigation={this.props.navigation}
             drawer
+            transactionSwitch={this.state.transactionSwitch}
           />
           <View style={styles.spinner}>
             <ActivityIndicator
