@@ -21,7 +21,7 @@
     "bundleIdentifier": "com.luuun"
   },
   "android": {
-    "versionCode": 4,
+    "versionCode": 6,
     "package": "com.luuun"
   }
 }
