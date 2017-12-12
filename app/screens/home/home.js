@@ -24,6 +24,8 @@ export default class Home extends Component {
       dataToShow: {
         currency: {},
       },
+      creditSwitch: true,
+      debitSwitch: true,
     }
   }
 
@@ -56,6 +58,25 @@ export default class Home extends Component {
     if (responseJson.status === "success") {
       AsyncStorage.removeItem('user')
       AsyncStorage.setItem('user', JSON.stringify(responseJson.data))
+      let switches = responseJson.data.switches
+      let creditSwitches = switches.filter(word => word.tx_type === 'credit')
+      if (creditSwitches.length > 0) {
+        let creditSwitch = creditSwitches[0]
+        if (!creditSwitch.enabled) {
+          this.setState({
+            creditSwitch: false,
+          })
+        }
+      }
+      let debitSwitches = switches.filter(word => word.tx_type === 'debit')
+      if (debitSwitches.length > 0) {
+        let debitSwitch = debitSwitches[0]
+        if (!debitSwitch.enabled) {
+          this.setState({
+            debitSwitch: false,
+          })
+        }
+      }
       const token = await AsyncStorage.getItem('token')
       if (token === null) {
         await this.logout()
@@ -77,13 +98,31 @@ export default class Home extends Component {
   }
 
   getBalanceInfo = async () => {
-    //console.log("dhukse")
     let responseJson = await UserInfoService.getActiveAccount()
     if (responseJson.status === "success") {
-      const account = responseJson.data.results[0].currencies[0]
+      let account = responseJson.data.results[0].currencies[0]
+      let switches = account.switches
+      let creditSwitches = switches.filter(word => word.tx_type === 'credit')
+      if (creditSwitches.length > 0) {
+        let creditSwitch = creditSwitches[0]
+        if (!creditSwitch.enabled) {
+          this.setState({
+            creditSwitch: false,
+          })
+        }
+      }
+      let debitSwitches = switches.filter(word => word.tx_type === 'debit')
+      if (debitSwitches.length > 0) {
+        let debitSwitch = debitSwitches[0]
+        if (!debitSwitch.enabled) {
+          this.setState({
+            debitSwitch: false,
+          })
+        }
+      }
       AsyncStorage.setItem('currency', JSON.stringify(account.currency))
       this.setState({ symbol: account.currency.symbol })
-      this.setState({ balance: this.setBalance(account.balance, account.currency.divisibility) })
+      this.setState({ balance: this.setBalance(account.available_balance, account.currency.divisibility) })
     }
     else {
       this.logout()
@@ -114,6 +153,8 @@ export default class Home extends Component {
           <Header
             navigation={this.props.navigation}
             drawer
+            creditSwitch={this.state.creditSwitch}
+            debitSwitch={this.state.debitSwitch}
           />
           <View style={styles.spinner}>
             <ActivityIndicator

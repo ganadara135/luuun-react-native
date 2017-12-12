@@ -6,6 +6,7 @@
   "private": true,
   "main": "main.js",
   "dependencies": {
+    "big.js": "^5.0.3",
     "expo": "16.0.0",
     "react": "16.0.0-alpha.6",
     "react-moment": "0.2.4",
