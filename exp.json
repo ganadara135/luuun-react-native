@@ -3,7 +3,7 @@
   "description": "Digital wallet for storing lumens and digital currencies on the stellar network",
   "slug": "luuun",
   "privacy": "public",
-  "sdkVersion": "17.0.0",
+  "sdkVersion": "24.0.0",
   "version": "1.0.4",
   "icon": "./assets/icons/leap.png",
   "loading": {
