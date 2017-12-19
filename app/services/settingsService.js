@@ -14,15 +14,15 @@ var settingsService = {
   },
 
   getAllBitcoinAddresses: () => {
-    return BaseService.get('user/bitcoin-accounts/')
+    return BaseService.get('user/crypto-accounts/')
   },
 
   addBitcoinAddresses: (data) => {
-    return BaseService.post('user/bitcoin-accounts/', data)
+    return BaseService.post('user/crypto-accounts/', data)
   },
 
   editBitcoinAddresses: (id, data) => {
-    return BaseService.patch('user/bitcoin-accounts/' + id + '/', data)
+    return BaseService.patch('user/crypto-accounts/' + id + '/', data)
   },
 
   getAllMobiles: () => {
