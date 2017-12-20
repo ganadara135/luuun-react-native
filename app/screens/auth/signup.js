@@ -3,6 +3,7 @@ import {View, Alert, StyleSheet, ScrollView, TouchableHighlight, Text, KeyboardA
 import AuthService from './../../services/authService'
 import Auth from './../../util/auth'
 import TextInput from './../../components/textInput'
+import MobileInput from './../../components/mobileNumberInput'
 import Colors from './../../config/colors'
 import Constants from './../../config/constants'
 import Header from './../../components/header'

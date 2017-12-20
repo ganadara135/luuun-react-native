@@ -26,9 +26,8 @@ export default class SendTo extends Component {
 
     constructor(props) {
         super(props)
-        const params = this.props.navigation.state.params
         this.state = {
-            balance:params.balance,
+            balance:this.props.navigation.state.params?this.props.navigation.state.params.balance:0,
             ready: false,
             refreshing: false,
             reference: "",
