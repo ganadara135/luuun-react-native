@@ -19,7 +19,7 @@ export default class Address extends Component {
             line_2: '',
             city: '',
             state_province: '',
-            country: address.country !== "--" ? address.country : 'US',
+            country: 'US',
             postal_code: '',
         }
     }
@@ -38,7 +38,7 @@ export default class Address extends Component {
                 line_2: address.line_2,
                 city: address.city,
                 state_province: address.state_province,
-                country: address.country !== "--" ? address.country : 'US',
+                country: address.country !== "" ? address.country : 'US',
                 postal_code: address.postal_code,
             })
         }
