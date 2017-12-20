@@ -27,7 +27,7 @@ export default class Settings extends Component {
           <Option name="Get verified" gotoAddress="SettingsGetVerified" goTo={this.goTo} />
           <Option name="Address" gotoAddress="SettingsAddress" goTo={this.goTo} />
           <Option name="Security" gotoAddress="SettingsSecurity" goTo={this.goTo} />
-          <Option name="Notifications" gotoAddress="SettingsNotifications" goTo={this.goTo} />
+          {/*<Option name="Notifications" gotoAddress="SettingsNotifications" goTo={this.goTo} />*/}
         </ScrollView>
       </View>
     )
