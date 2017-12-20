@@ -3,3 +3,5 @@ node_modules/**/*
 npm-debug.*
 ios
 *.jks
+package-lock.json
+yarn.lock

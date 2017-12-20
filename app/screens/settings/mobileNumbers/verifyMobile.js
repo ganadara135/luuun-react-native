@@ -14,16 +14,19 @@ export default class AmountEntry extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      routeName:this.props.navigation.state.params.routeName,
       otp: '',
     }
   }
 
   reload = () => {
-    ResetNavigation.dispatchUnderDrawer(this.props.navigation, 'Settings', 'SettingsMobileNumbers')
+    
+    console.log("addEmailAddress: "+ this.state.routeName)
+    ResetNavigation.dispatchUnderDrawer(this.props.navigation, this.state.routeName!=null? 'GetVerified':'Settings', 'SettingsMobileNumbers')
   }
 
   verify = async () => {
-    let responseJson = await SettingsService.verifyMobile(this.state)
+    let responseJson = await SettingsService.verifyMobile({otp:this.state.otp})
 
     if (responseJson.status === "success") {
       this.reload()
@@ -50,6 +53,7 @@ export default class AmountEntry extends Component {
               placeholder="OTP"
               autoCapitalize="none"
               keyboardType="numeric"
+              underlineColorAndroid="white"
               onChangeText={(otp) => this.setState({ otp })}
             />
           </View>
@@ -57,14 +61,14 @@ export default class AmountEntry extends Component {
             <TouchableHighlight
               style={[styles.submit, { backgroundColor: Colors.red }]}
               onPress={() => this.reload()}>
-              <Text style={{ color: 'white', fontSize: 18 }}>
+              <Text style={{ color: 'white', fontSize: 20 }}>
                 Skip
             </Text>
             </TouchableHighlight>
             <TouchableHighlight
-              style={styles.submit}
+              style={[styles.submit,{marginLeft:25}]}
               onPress={this.verify}>
-              <Text style={{ color: 'white', fontSize: 18 }}>
+              <Text style={{ color: 'white', fontSize: 20 }}>
                 Verify
             </Text>
             </TouchableHighlight>
@@ -82,12 +86,13 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   submit: {
-    flex: 1,
-    padding: 10,
-    backgroundColor: Colors.lightblue,
-    width: "100%",
-    alignItems: 'center',
-    justifyContent: 'center',
+      flex: 1,
+      marginBottom:10,
+      backgroundColor: Colors.lightblue,
+      borderRadius: 25,
+      height: 50,
+      alignItems: 'center',
+      justifyContent: 'center',
   },
   input: {
     height: 60,
@@ -99,6 +104,7 @@ const styles = StyleSheet.create({
   },
   buttons: {
     height: 65,
+    marginHorizontal: 20,
     flexDirection: 'row',
     alignSelf: 'stretch',
   },

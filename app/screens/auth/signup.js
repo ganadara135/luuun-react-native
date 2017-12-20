@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
-import { View, Alert, StyleSheet, ScrollView, TouchableHighlight, Text, KeyboardAvoidingView } from 'react-native'
+import React, {Component} from 'react'
+import {View, Alert, StyleSheet, ScrollView, TouchableHighlight, Text, KeyboardAvoidingView} from 'react-native'
 import AuthService from './../../services/authService'
 import Auth from './../../util/auth'
 import TextInput from './../../components/textInput'
@@ -8,126 +8,141 @@ import Constants from './../../config/constants'
 import Header from './../../components/header'
 
 export default class Signup extends Component {
-  static navigationOptions = {
-    title: 'Create new account',
-  }
-
-  constructor(props) {
-    super(props)
-    this.state = {
-      first_name: '',
-      last_name: '',
-      email: '',
-      company: Constants.company_id,
-      password1: '',
-      password2: '',
+    static navigationOptions = {
+        title: 'Create new account',
     }
-  }
 
-  changeCountryCode = (code) => {
-    this.setState({ mobile: '+' + code })
-  }
-
-  signup = async () => {
-    let responseJson = await AuthService.signup(this.state)
-    if (responseJson.status === "success") {
-      const loginInfo = responseJson.data
-      Auth.login(this.props.navigation, loginInfo)
+    constructor(props) {
+        super(props)
+        this.state = {
+            first_name: '',
+            last_name: '',
+            email: '',
+            mobile_number: '+1',
+            company: Constants.company_id,
+            password1: '',
+            password2: '',
+        }
     }
-    else {
-      Alert.alert('Error',
-        responseJson.message,
-        [{ text: 'OK' }])
-    }
-  }
 
-  render() {
-    return (
-      <View style={{ flex: 1 }}>
-        <Header
-          navigation={this.props.navigation}
-          back
-          title="Create new account"
-        />
-        <View style={styles.mainContainer}>
-          <KeyboardAvoidingView style={styles.container} behavior={'padding'} keyboardVerticalOffset={85}>
-            <ScrollView keyboardDismissMode={'interactive'}>
-              <TextInput
-                title="First name"
-                placeholder="e.g. John"
-                autoCapitalize="none"
-                onChangeText={(first_name) => this.setState({ first_name })}
-              />
-              <TextInput
-                title="Last name"
-                placeholder="e.g. Snow"
-                autoCapitalize="none"
-                onChangeText={(last_name) => this.setState({ last_name })}
-              />
-              <TextInput
-                style={styles.input}
-                title="Email"
-                placeholder="e.g john@gmail.com"
-                autoCapitalize="none"
-                keyboardType="email-address"
-                onChangeText={(email) => this.setState({ email })}
-              />
-              <TextInput
-                title="Password"
-                placeholder="Password"
-                autoCapitalize="none"
-                secureTextEntry
-                onChangeText={(password1) => this.setState({ password1 })}
-              />
-              <TextInput
-                title="Confirm password"
-                placeholder="Confirm password"
-                autoCapitalize="none"
-                secureTextEntry
-                onChangeText={(password2) => this.setState({ password2 })}
-              />
-            </ScrollView>
-            <TouchableHighlight
-              style={styles.submit}
-              onPress={() => this.signup()}>
-              <Text style={{ color: 'white' }}>
-                Sign up
-            </Text>
-            </TouchableHighlight>
-          </KeyboardAvoidingView>
-        </View>
-      </View>
-    );
-  }
+    changeCountryCode = (code) => {
+        this.setState({mobile_number: '+' + code})
+    }
+
+    signup = async () => {
+        let data = this.state;
+        if (data.mobile_number.length < 8) {
+            delete data.mobile_number
+        }
+        console.log(data)
+        let responseJson = await AuthService.signup(data)
+        if (responseJson.status === "success") {
+            const loginInfo = responseJson.data
+            if (data.mobile_number) {
+                this.props.navigation.navigate("AuthVerifyMobile", {loginInfo, signupInfo:this.state})
+            } else {
+                Auth.login(this.props.navigation, loginInfo)
+            }
+        }
+        else {
+            Alert.alert('Error',
+                responseJson.message,
+                [{text: 'OK'}])
+        }
+    }
+
+    render() {
+        return (
+            <View style={{flex: 1}}>
+                <Header
+                    navigation={this.props.navigation}
+                    back
+                    title="Create new account"
+                />
+                <View style={styles.mainContainer}>
+                    <KeyboardAvoidingView style={styles.container} behavior={'padding'} keyboardVerticalOffset={85}>
+                        <ScrollView keyboardDismissMode={'interactive'}>
+                            <TextInput
+                                title="First name"
+                                underlineColorAndroid="white"
+                                placeholder="e.g. John"
+                                autoCapitalize="none"
+                                onChangeText={(first_name) => this.setState({first_name})}
+                            />
+                            <TextInput
+                                title="Last name"
+                                underlineColorAndroid="white"
+                                placeholder="e.g. Snow"
+                                autoCapitalize="none"
+                                onChangeText={(last_name) => this.setState({last_name})}
+                            />
+                            <TextInput
+                                title="Email"
+                                underlineColorAndroid="white"
+                                placeholder="e.g john@gmail.com"
+                                autoCapitalize="none"
+                                keyboardType="email-address"
+                                onChangeText={(email) => this.setState({email})}
+                            />
+                            <MobileInput
+                                title="Mobile"
+                                autoCapitalize="none"
+                                keyboardType="numeric"
+                                value={this.state.mobile_number}
+                                underlineColorAndroid="white"
+                                onChangeText={(mobile_number) => this.setState({mobile_number})}
+                                changeCountryCode={this.changeCountryCode}
+                            />
+                            <TextInput
+                                title="Password"
+                                placeholder="Password"
+                                underlineColorAndroid="white"
+                                autoCapitalize="none"
+                                secureTextEntry
+                                onChangeText={(password1) => this.setState({password1})}
+                            />
+                            <TextInput
+                                title="Confirm password"
+                                placeholder="Confirm password"
+                                underlineColorAndroid="white"
+                                autoCapitalize="none"
+                                secureTextEntry
+                                onChangeText={(password2) => this.setState({password2})}
+                            />
+                        </ScrollView>
+                        <TouchableHighlight
+                            style={styles.submit}
+                            onPress={() => this.signup()}>
+                            <Text style={{color: 'white', fontSize:20}}>
+                                Sign up
+                            </Text>
+                        </TouchableHighlight>
+                    </KeyboardAvoidingView>
+                </View>
+            </View>
+        );
+    }
 }
 
 const styles = StyleSheet.create({
-  mainContainer: {
-    flex: 1,
-    backgroundColor: 'white',
-    padding: 15,
-  },
-  container: {
-    flex: 1,
-    flexDirection: 'column',
-  },
-  input: {
-    height: 60,
-    width: "100%",
-    padding: 10,
-    marginTop: 20,
-    borderColor: 'white',
-    borderWidth: 1,
-  },
-  submit: {
-    padding: 10,
-    marginTop: 10,
-    height: 50,
-    borderRadius: 8,
-    backgroundColor: Colors.lightblue,
-    width: "100%",
-    alignSelf: 'stretch',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+    mainContainer: {
+        flex: 1,
+        backgroundColor: 'white',
+        paddingVertical: 10,
+    },
+    container: {
+        flex: 1,
+        flexDirection: 'column',
+        paddingTop: 10,
+    },
+    submit: {
+        marginTop: 10,
+        height: 50,
+        borderRadius: 25,
+        backgroundColor: Colors.lightblue,
+        marginHorizontal: 10,
+        alignSelf: 'stretch',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
 })

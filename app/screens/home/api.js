@@ -6,7 +6,6 @@ const perPage = 10
 
 export default {
   getPosts(page) {
-    console.log(page)
     return new Promise(resolve => {
       setTimeout(() => {
         const pageCount = min([totalCount - (page - 1) * perPage, perPage])

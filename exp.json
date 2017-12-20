@@ -6,6 +6,8 @@
   "sdkVersion": "24.0.0",
   "version": "1.0.4",
   "icon": "./assets/icons/leap.png",
+  "orientation": "portrait",
+  "primaryColor": "#cccccc",
   "loading": {
     "icon": "./assets/icons/loading.png",
     "hideExponentText": true
