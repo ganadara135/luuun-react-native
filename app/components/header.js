@@ -99,12 +99,13 @@ export default class Account extends Component {
                             null
                         }
                         {this.props.back ?
-                            <TouchableOpacity style={{padding: 20}}>
+                            <TouchableOpacity
+                                onPress={() => this.props.navigation.goBack()}
+                                style={{padding: 20}}>
                                 <Icon
                                     name="ios-arrow-back"
                                     size={35}
                                     color="white"
-                                    onPress={() => this.props.navigation.goBack()}
                                 />
                             </TouchableOpacity> :
                             null
@@ -120,28 +121,29 @@ export default class Account extends Component {
                     </View>
                     <View style={styles.rightIcon}>
                         {this.props.right ?
-                            <TouchableOpacity style={{padding: 10}}>
+                            <TouchableOpacity
+                                onPress={() => this.props.navigation.navigate('QRcodeScanner')}
+                                style={{padding: 10}}>
                                 <Icon
                                     name="ios-qr-scanner-outline"
                                     size={30}
                                     color="white"
                                     style={{paddingRight: 10}}
-                                    onPress={() => this.props.navigation.navigate('QRcodeScanner')}
                                 />
                             </TouchableOpacity> :
                             null
                         }
                         {this.props.homeRight ?
                             <TouchableOpacity
+                                onPress={() =>
+                                    this.props.navigation.navigate('AccountsB')
+                                }
                                 style={{flex: 1, padding: 10, alignItems: 'flex-end', justifyContent: 'flex-start'}}>
                                 <Icon
                                     name="ios-arrow-up-outline"
                                     size={30}
                                     color="white"
                                     style={{paddingRight: 10}}
-                                    onPress={() =>
-                                        this.props.navigation.navigate('AccountsB')
-                                    }
                                 />
                             </TouchableOpacity> :
                             null
