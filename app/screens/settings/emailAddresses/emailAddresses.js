@@ -15,7 +15,6 @@ export default class Settings extends Component {
 
     constructor(props) {
         super(props);
-        console.log("emailAddress: "+ this.props.navigation.state.params.name)
         this.state = {
             routeName: this.props.navigation.state.params?this.props.navigation.state.params.name:null,
             refreshing: false,
