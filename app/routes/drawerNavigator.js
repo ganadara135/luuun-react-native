@@ -41,6 +41,9 @@ const RouteConfigs = {
 
 export default DrawerNavigator(RouteConfigs, {
     drawerWidth: 300,
+    drawerOpenRoute:'DrawerOpen',
+    drawerCloseRoute:'DrawerClose',
+    drawerToggleRoute:'DrawerToggle',
     contentComponent: (props) => (
         <View style={styles.container}>
             <DrawerHeader navigation={props.navigation} />

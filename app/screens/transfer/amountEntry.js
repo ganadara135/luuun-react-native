@@ -13,7 +13,7 @@ import {
 import TransactionService from './../../services/transactionService'
 import ResetNavigation from './../../util/resetNavigation'
 import TextInput from './../../components/textInput'
-import TextInputMultiLine from './../../components/textInputMultiline'
+import UserInfoService from './../../services/userInfoService'
 import Colors from './../../config/colors'
 import Header from './../../components/header'
 import Big from 'big.js'
@@ -28,11 +28,14 @@ export default class AmountEntry extends Component {
         const params = this.props.navigation.state.params
         this.state = {
             reference: params.reference,
-            balance: params.balance,
+            balance: 0,
             amount: 0,
             note: '',
             disabled: false
         }
+    }
+    componentWillMount(){
+        this.getBalanceInfo()
     }
 
     send = async () => {
@@ -62,6 +65,20 @@ export default class AmountEntry extends Component {
                     },
                 ]
             )
+        }
+    }
+    setBalance = (balance, divisibility) => {
+        for (let i = 0; i < divisibility; i++) {
+            balance = balance / 10
+        }
+
+        return balance
+    }
+    getBalanceInfo = async () => {
+        let responseJson = await UserInfoService.getActiveAccount()
+        if (responseJson.status === "success") {
+            let account = responseJson.data.results[0].currencies[0]
+            this.setState({ balance: this.setBalance(account.available_balance, account.currency.divisibility) })
         }
     }
 

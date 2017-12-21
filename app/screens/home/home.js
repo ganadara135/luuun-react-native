@@ -187,10 +187,7 @@ export default class Home extends Component {
                     </TouchableHighlight>
                     <TouchableHighlight
                         style={[styles.submit, { marginLeft: 25 }]}
-                        onPress={() => this.props.navigation.navigate("SendTo", {
-                            reference: "",
-                            balance: this.state.balance
-                        })}>
+                        onPress={() => this.props.navigation.navigate("SendTo")}>
 
                         <Text style={{ color: 'white', fontSize: 20 }}>
                             Send
