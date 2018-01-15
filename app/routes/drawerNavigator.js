@@ -1,6 +1,6 @@
 import React from 'react'
-import { ScrollView, View, StyleSheet } from 'react-native'
-import { DrawerNavigator, DrawerItems } from 'react-navigation'
+import {ScrollView, View, StyleSheet} from 'react-native'
+import {DrawerNavigator, DrawerItems} from 'react-navigation'
 import Home from './../screens/home/home'
 import Settings from './../screens/settings/settings'
 import About from './../screens/about/about'
@@ -40,13 +40,13 @@ const RouteConfigs = {
 }
 
 export default DrawerNavigator(RouteConfigs, {
-    drawerWidth: 300,
+
     drawerOpenRoute:'DrawerOpen',
     drawerCloseRoute:'DrawerClose',
     drawerToggleRoute:'DrawerToggle',
     contentComponent: (props) => (
         <View style={styles.container}>
-            <DrawerHeader navigation={props.navigation} />
+            <DrawerHeader navigation={props.navigation}/>
             <ScrollView>
                 <DrawerItems
                     {...props}
@@ -54,7 +54,7 @@ export default DrawerNavigator(RouteConfigs, {
                     activeBackgroundColor="#485159"
                     inactiveTintColor="white"
                     inactiveBackgroundColor="transparent"
-                    labelStyle={{ margin: 15, alignItems: 'center', fontSize: 16, fontWeight: 'normal' }}
+                    labelStyle={{margin: 15, alignItems: 'center', fontSize: 16, fontWeight: 'normal'}}
                 />
             </ScrollView>
         </View>
