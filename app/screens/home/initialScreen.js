@@ -27,14 +27,14 @@ export default class InitialScreen extends Component {
                         style={styles.button}
                         onPress={() => this.props.navigation.navigate("Login")}>
                         <Text style={styles.buttonText}>
-                            Sign In
+                            Sign in
                         </Text>
                     </TouchableHighlight>
                     <TouchableHighlight
                         style={[styles.button, {marginLeft: 25}]}
                         onPress={() => this.props.navigation.navigate("Signup")}>
                         <Text style={styles.buttonText}>
-                            Sign Up
+                            Sign up
                         </Text>
                     </TouchableHighlight>
                 </View>
