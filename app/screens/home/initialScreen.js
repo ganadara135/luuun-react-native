@@ -18,7 +18,7 @@ export default class InitialScreen extends Component {
             <View style={styles.container}>
                 <View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
                     <Image
-                        source={require('./../../../assets/icons/leap.png')}
+                        source={require('./../../../assets/icons/leap_home.png')}
                         resizeMode="contain"
                         style={styles.image}/>
                 </View>
