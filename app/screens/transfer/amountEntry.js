@@ -10,7 +10,7 @@ import {
     Alert,
     TouchableWithoutFeedback
 } from 'react-native'
-import TransactionService from './../../services/stellarService'
+import stellarService from './../../services/stellarService'
 import ResetNavigation from './../../util/resetNavigation'
 import TextInput from './../../components/textInput'
 import UserInfoService from './../../services/userInfoService'
@@ -23,17 +23,35 @@ export default class AmountEntry extends Component {
         title: 'Send money',
     }
 
+
     constructor(props) {
         super(props)
         const params = this.props.navigation.state.params
+        console.log(params)
         this.state = {
             reference: params.reference,
-            balance: 0,
             amount: 0,
+            memo: params.memo,
+            balance: 0,
             note: '',
             disabled: false
         }
     }
+
+    transferConfirmed = async (amount) => {
+        let responseJson = await stellarService.sendMoney(amount, this.state.memo, this.state.reference, 'XLM', 'default')
+        if (responseJson.status === 201) {
+            Alert.alert('Success',
+                "Transaction successful",
+                [{ text: 'OK', onPress: () => ResetNavigation.dispatchToSingleRoute(this.props.navigation, "Home") }])
+        }
+        else {
+            Alert.alert('Error',
+                "Transaction failed",
+                [{ text: 'OK' }])
+        }
+    }
+
     componentWillMount(){
         this.getBalanceInfo()
     }
@@ -79,20 +97,6 @@ export default class AmountEntry extends Component {
         if (responseJson.status === "success") {
             let account = responseJson.data.results[0].currencies[0]
             this.setState({ balance: this.setBalance(account.available_balance, account.currency.divisibility) })
-        }
-    }
-
-    transferConfirmed = async (amount) => {
-        let responseJson = await TransactionService.sendMoney(amount, this.state.reference, this.state.note)
-        if (responseJson.status === "success") {
-            Alert.alert('Success',
-                "Transaction successful",
-                [{text: 'OK', onPress: () => ResetNavigation.dispatchToSingleRoute(this.props.navigation, "Home")}])
-        }
-        else {
-            Alert.alert('Error',
-                responseJson.message,
-                [{text: 'OK'}])
         }
     }
 
