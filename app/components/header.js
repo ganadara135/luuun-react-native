@@ -135,9 +135,7 @@ export default class Account extends Component {
                         }
                         {this.props.homeRight ?
                             <TouchableOpacity
-                                onPress={() =>
-                                    this.props.navigation.navigate('AccountsB')
-                                }
+                                onPress={() => this.props.navigation.navigate('AccountsB')}
                                 style={{flex: 1, padding: 10, alignItems: 'flex-end', justifyContent: 'flex-start'}}>
                                 <Icon
                                     name="ios-arrow-up-outline"

@@ -7,16 +7,14 @@ import Auth from './../util/auth'
 export default class DrawerHeader extends Component {
   constructor(props) {
     super(props)
-    console.log(props)
     this.state = {
       userInfo: {},
     }
-    this.getUserInfo()
+    //this.getUserInfo()
   }
 
-  getUserInfo = async () => {
+  async componentWillMount() {
     const value = await AsyncStorage.getItem('user');
-    console.log(value)
     if (value === null) {
       Auth.logout(this.props.navigation)
     }

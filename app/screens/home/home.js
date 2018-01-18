@@ -1,5 +1,5 @@
-import React, {Component} from 'react'
-import {View, StyleSheet, AsyncStorage, TouchableHighlight, Text, ActivityIndicator, Image} from 'react-native'
+import React, { Component } from 'react'
+import { View, StyleSheet, AsyncStorage, TouchableHighlight, Text, Image, TouchableWithoutFeedback } from 'react-native'
 import moment from 'moment'
 import PopupDialog from 'react-native-popup-dialog'
 import UserInfoService from './../../services/userInfoService'
@@ -19,11 +19,12 @@ export default class Home extends Component {
         super(props)
         this.state = {
             balance: 0,
+            showTransaction: false,
             symbol: '',
-            ready: false,
             dataToShow: {
                 currency: {},
             },
+            reference: '',
             creditSwitch: true,
             debitSwitch: true,
         }
@@ -35,14 +36,15 @@ export default class Home extends Component {
             if (token === null) {
                 this.logout()
             }
-            else {
-                this.getUserInfo()
-                this.getBalanceInfo()
-            }
+            return token
         }
         catch (error) {
         }
+    }
 
+    componentDidMount() {
+        this.getBalanceInfo()
+        this.getUserInfo()
     }
 
     setBalance = (balance, divisibility) => {
@@ -85,7 +87,7 @@ export default class Home extends Component {
                     ResetNavigation.dispatchToSingleRoute(this.props.navigation, "SetUsername")
                 }
                 else {
-                    this.setState({ready: true})
+                    this.setState({ ready: true })
                 }
             }
             //this.setState({ ready: true })
@@ -130,7 +132,7 @@ export default class Home extends Component {
     }
 
     showDialog = (item) => {
-        this.setState({dataToShow: item});
+        this.setState({ dataToShow: item });
         this.popupDialog.show()
     }
 
@@ -143,102 +145,92 @@ export default class Home extends Component {
     }
 
     render() {
-        if (!this.state.ready) {
-            return (
-                <View style={styles.container}>
-                    <Header
-                        navigation={this.props.navigation}
-                        drawer
-                        creditSwitch={this.state.creditSwitch}
-                        debitSwitch={this.state.debitSwitch}
-                    />
-                    <View style={styles.spinner}>
-                        <ActivityIndicator
-                            animating
-                            style={{height: 80}}
-                            size="large"
-                        />
+        /*let swipeBtns = [{
+            text: 'Show',
+            backgroundColor: Colors.lightgray,
+            underlayColor: 'rgba(0, 0, 0, 1, 0.6)',
+            onPress: () => this.props.navigation.navigate(
+                'AccountCurrencies',
+                {reference: this.state.reference}
+            )
+        }];*/
+        return (
+            <View style={styles.container}>
+                <Header
+                    navigation={this.props.navigation}
+                    drawer
+                    creditSwitch={this.state.creditSwitch}
+                    debitSwitch={this.state.debitSwitch}
+                />
+                <View style={styles.balance}>
+                    <View style={{ flexDirection: 'row' }}>
+                        <Text style={{ fontSize: 25, color: 'white' }}>
+                            {this.state.symbol}
+                        </Text>
+                        <Text style={{ paddingLeft: 5, fontSize: 40, color: 'white' }}>
+                            {this.state.balance.toFixed(4).replace(/0{0,2}$/, "")}
+                        </Text>
                     </View>
                 </View>
-            )
-        }
-        else {
-            return (
-                <View style={styles.container}>
-                    <Header
-                        navigation={this.props.navigation}
-                        drawer
-                    />
-                    <View style={styles.balance}>
-                        <View style={{flexDirection: 'row'}}>
-                            <Text style={{fontSize: 25, color: 'white'}}>
-                                {this.state.symbol}
-                            </Text>
-                            <Text style={{paddingLeft: 5, fontSize: 40, color: 'white'}}>
-                                {this.state.balance.toFixed(4).replace(/0{0,2}$/, "")}
+                <View style={styles.transaction}>
+                    <Transactions updateBalance={this.getBalanceInfo} showDialog={this.showDialog}
+                        logout={this.logout} />
+                </View>
+                <View style={styles.buttonbar}>
+                    <TouchableHighlight
+                        style={styles.submit}
+                        onPress={() => this.props.navigation.navigate("Receive")}>
+                        <Text style={{ color: 'white', fontSize: 20 }}>
+                            Receive
+                        </Text>
+                    </TouchableHighlight>
+                    <TouchableHighlight
+                        style={[styles.submit, { marginLeft: 25 }]}
+                        onPress={() => this.props.navigation.navigate("SendTo")}>
+
+                        <Text style={{ color: 'white', fontSize: 20 }}>
+                            Send
+                        </Text>
+                    </TouchableHighlight>
+                </View>
+                <PopupDialog
+                    ref={(popupDialog) => {
+                        this.popupDialog = popupDialog;
+                    }}
+                    height={250}>
+                    <View style={{ flex: 1 }}>
+                        <View style={{ flex: 3, justifyContent: 'center', alignItems: 'center', padding: 20 }}>
+                            <Image
+                                source={require('./../../../assets/icons/placeholder.png')}
+                                style={{ height: 80, width: 80, margin: 10 }}
+                            />
+                            <Text style={{ fontSize: 20, color: Colors.black }}>
+                                {this.state.dataToShow.label + ": " + this.state.dataToShow.currency.symbol + this.getAmount(this.state.dataToShow.amount, this.state.dataToShow.currency.divisibility)}
                             </Text>
                         </View>
-                    </View>
-                    <View style={styles.transaction}>
-                        <Transactions updateBalance={this.getBalanceInfo} showDialog={this.showDialog}
-                                      logout={this.logout}/>
-                    </View>
-                    <View style={styles.buttonbar}>
-                        <TouchableHighlight
-                            style={styles.submit}
-                            onPress={() => this.props.navigation.navigate("Receive")}>
-                            <Text style={{color: 'white', fontSize: 20}}>
-                                Receive
-                            </Text>
-                        </TouchableHighlight>
-                        <TouchableHighlight
-                            style={styles.submit}
-                            onPress={() => this.props.navigation.navigate("Send")}>
-                            <Text style={{color: 'white', fontSize: 20}}>
-                                Send
-                            </Text>
-                        </TouchableHighlight>
-                    </View>
-                    <PopupDialog
-                        ref={(popupDialog) => {
-                            this.popupDialog = popupDialog;
-                        }}
-                        width="90%"
-                        height={250}>
-                        <View style={{flex: 1}}>
-                            <View style={{flex: 3, justifyContent: 'center', alignItems: 'center', padding: 20}}>
-                                <Image
-                                    source={require('./../../../assets/icons/placeholder.png')}
-                                    style={{height: 80, width: 80, margin: 10}}
-                                />
-                                <Text style={{fontSize: 20, color: Colors.black}}>
-                                    {this.state.dataToShow.label + ": " + this.state.dataToShow.currency.symbol + this.getAmount(this.state.dataToShow.amount, this.state.dataToShow.currency.divisibility)}
+                        <View style={{
+                            flex: 1,
+                            flexDirection: 'row',
+                            borderTopColor: Colors.lightgray,
+                            borderTopWidth: 1,
+                            paddingLeft: 20,
+                            paddingRight: 20
+                        }}>
+                            <View style={{ flex: 2, justifyContent: 'center' }}>
+                                <Text style={{ fontSize: 15, alignSelf: "flex-start", color: Colors.black }}>
+                                    {moment(this.state.dataToShow.created).format('lll')}
                                 </Text>
                             </View>
-                            <View style={{
-                                flex: 1,
-                                flexDirection: 'row',
-                                borderTopColor: Colors.lightgray,
-                                borderTopWidth: 1,
-                                paddingLeft: 20,
-                                paddingRight: 20
-                            }}>
-                                <View style={{flex: 2, justifyContent: 'center'}}>
-                                    <Text style={{fontSize: 15, alignSelf: "flex-start", color: Colors.black}}>
-                                        {moment(this.state.dataToShow.created).format('lll')}
-                                    </Text>
-                                </View>
-                                <View style={{flex: 1, justifyContent: 'center'}}>
-                                    <Text style={{fontSize: 15, alignSelf: "flex-end", color: Colors.black}}>
-                                        {this.state.dataToShow.status}
-                                    </Text>
-                                </View>
+                            <View style={{ flex: 1, justifyContent: 'center' }}>
+                                <Text style={{ fontSize: 15, alignSelf: "flex-end", color: Colors.black }}>
+                                    {this.state.dataToShow.status}
+                                </Text>
                             </View>
                         </View>
-                    </PopupDialog>
-                </View>
-            )
-        }
+                    </View>
+                </PopupDialog>
+            </View>
+        )
     }
 }
 
@@ -253,26 +245,32 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.lightblue,
         justifyContent: 'flex-start',
         alignItems: 'center',
-        paddingTop: 20,
     },
     transaction: {
         flex: 5,
-        backgroundColor: Colors.transactionBackground,
+        backgroundColor: Colors.lightgray,
     },
     buttonbar: {
+        position: 'absolute',
+        bottom: 0,
         flexDirection: 'row',
-        justifyContent: 'space-between',
-        height: 65,
-        backgroundColor: Colors.lightblue,
+        paddingHorizontal: 25,
+        justifyContent: 'center',
+        paddingVertical: 10,
+        backgroundColor: 'transparent',
+    },
+    floatView: {
+        position: 'absolute',
+        width: 100,
+        height: 100,
+        top: 200,
+        left: 40,
+        backgroundColor: 'green',
     },
     submit: {
-        height: "100%",
-        width: "50%",
-        alignSelf: 'stretch',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    spinner: {
+        backgroundColor: Colors.lightblue,
+        height: 50,
+        borderRadius: 25,
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
