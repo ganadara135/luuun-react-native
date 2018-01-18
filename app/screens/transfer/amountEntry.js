@@ -10,7 +10,7 @@ import {
     Alert,
     TouchableWithoutFeedback
 } from 'react-native'
-import TransactionService from './../../services/transactionService'
+import TransactionService from './../../services/stellarService'
 import ResetNavigation from './../../util/resetNavigation'
 import TextInput from './../../components/textInput'
 import UserInfoService from './../../services/userInfoService'
