@@ -8,8 +8,10 @@ import {
     TouchableHighlight,
     Text,
     Alert,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
+    ActivityIndicator,
 } from 'react-native'
+import Spinner from 'react-native-loading-spinner-overlay'
 import stellarService from './../../services/stellarService'
 import ResetNavigation from './../../util/resetNavigation'
 import TextInput from './../../components/textInput'
@@ -34,25 +36,41 @@ export default class AmountEntry extends Component {
             memo: params.memo,
             balance: 0,
             note: '',
-            disabled: false
+            disabled: false,
+            loading: false,
+            loadingMessage: "",
         }
     }
 
     transferConfirmed = async (amount) => {
+        this.setState({
+            loading: true,
+            loadingMessage: 'Sending...',
+        })
         let responseJson = await stellarService.sendMoney(amount, this.state.memo, this.state.reference, 'XLM', 'default')
         if (responseJson.status === 201) {
             Alert.alert('Success',
                 "Transaction successful",
-                [{ text: 'OK', onPress: () => ResetNavigation.dispatchToSingleRoute(this.props.navigation, "Home") }])
+                [{text: 'OK', onPress: () => {
+                    this.setState({
+                        loading: false,
+                    })
+                    ResetNavigation.dispatchToSingleRoute(this.props.navigation, "Home")
+                }}])
         }
         else {
+            this.setState({
+                loading: false,
+            })
             Alert.alert('Error',
                 "Transaction failed",
-                [{ text: 'OK' }])
+                [{
+                    text: 'OK'
+                }])
         }
     }
 
-    componentWillMount(){
+    componentWillMount() {
         this.getBalanceInfo()
     }
 
@@ -69,7 +87,7 @@ export default class AmountEntry extends Component {
             const currency = JSON.parse(data)
             let amount = new Big(this.state.amount)
             for (let i = 0; i < currency.divisibility; i++) {
-              amount = amount.times(10)
+                amount = amount.times(10)
             }
             Alert.alert(
                 'Are you sure?',
@@ -96,7 +114,7 @@ export default class AmountEntry extends Component {
         let responseJson = await UserInfoService.getActiveAccount()
         if (responseJson.status === "success") {
             let account = responseJson.data.results[0].currencies[0]
-            this.setState({ balance: this.setBalance(account.available_balance, account.currency.divisibility) })
+            this.setState({balance: this.setBalance(account.available_balance, account.currency.divisibility)})
         }
     }
 
@@ -126,6 +144,11 @@ export default class AmountEntry extends Component {
                     navigation={this.props.navigation}
                     back
                     title="Send money"
+                />
+                <Spinner
+                    visible={this.state.loading}
+                    textContent={this.state.loadingMessage}
+                    textStyle={{color: '#FFF'}}
                 />
                 <KeyboardAvoidingView style={styles.container} behavior={'padding'}>
                     <ScrollView keyboardDismissMode={'interactive'}>
