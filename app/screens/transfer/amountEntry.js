@@ -59,13 +59,14 @@ export default class AmountEntry extends Component {
                 }}])
         }
         else {
-            this.setState({
-                loading: false,
-            })
             Alert.alert('Error',
                 "Transaction failed",
                 [{
-                    text: 'OK'
+                    text: 'OK',onPress:()=>{
+                        this.setState({
+                            loading: false,
+                        })
+                    }
                 }])
         }
     }
