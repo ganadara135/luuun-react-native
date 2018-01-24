@@ -29,7 +29,6 @@ export default class AmountEntry extends Component {
     constructor(props) {
         super(props)
         const params = this.props.navigation.state.params
-        console.log(params)
         this.state = {
             reference: params.reference,
             amount: 0,
@@ -162,13 +161,13 @@ export default class AmountEntry extends Component {
                             onChangeText={this.amountChanged}
                         />
                         <TextInput
-                            title="Note"
-                            placeholder="Enter note here"
+                            title="Memo"
+                            placeholder="Enter memo here"
                             autoCapitalize="none"
                             placeholderTextColor="lightgray"
                             multiline={true}
                             underlineColorAndroid="white"
-                            onChangeText={(note) => this.setState({note})}
+                            onChangeText={(memo) => this.setState({memo:memo})}
                         />
                     </ScrollView>
                     {   this.state.disabled ?
