@@ -6,6 +6,7 @@ import {
     FlatList,
     ScrollView,
     RefreshControl,
+	AsyncStorage
 } from 'react-native'
 import {ListItem} from "react-native-elements"
 import TransactionService from './../../services/transactionService'
@@ -27,6 +28,7 @@ export default class Transactions extends Component {
             error: null,
             refreshing: false,
             company: {},
+			user:null
         };
     }
 
@@ -77,8 +79,11 @@ export default class Transactions extends Component {
     }
 
     getData = async () => {
+        let user= await AsyncStorage.getItem('user')
+        user=JSON.parse(user)
         this.setState({
             data: [],
+			user:user
         })
         let responseJson = await TransactionService.getAllTransactions()
         this.setData(responseJson)
@@ -147,7 +152,7 @@ export default class Transactions extends Component {
                         data={this.state.data}
                         renderItem={({item}) => (
                             <ListItem
-                                avatar={item.user.profile || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgmT5tM-IGcFDpqZ87p9zKGaWQuzpvAcDKfOTPYfx5A9zOmbTh8RMMFg'}
+                                avatar={!this.state.user.profile ? this.state.user.profile : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgmT5tM-IGcFDpqZ87p9zKGaWQuzpvAcDKfOTPYfx5A9zOmbTh8RMMFg'}
                                 title={item.tx_type === 'credit' ? "Received" : "Sent"}
                                 subtitle={moment(item.created).fromNow()}
                                 rightTitle={`${item.currency.symbol}${this.getAmount(item.amount, item.currency.divisibility)}`}
