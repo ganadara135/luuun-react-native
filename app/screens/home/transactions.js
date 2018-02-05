@@ -32,7 +32,7 @@ export default class Transactions extends Component {
         };
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         this.getData()
     }
 
@@ -152,7 +152,7 @@ export default class Transactions extends Component {
                         data={this.state.data}
                         renderItem={({item}) => (
                             <ListItem
-                                avatar={!this.state.user.profile ? this.state.user.profile : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgmT5tM-IGcFDpqZ87p9zKGaWQuzpvAcDKfOTPYfx5A9zOmbTh8RMMFg'}
+                                avatar={this.state.user.profile!=null ? this.state.user.profile : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgmT5tM-IGcFDpqZ87p9zKGaWQuzpvAcDKfOTPYfx5A9zOmbTh8RMMFg'}
                                 title={item.tx_type === 'credit' ? "Received" : "Sent"}
                                 subtitle={moment(item.created).fromNow()}
                                 rightTitle={`${item.currency.symbol}${this.getAmount(item.amount, item.currency.divisibility)}`}
