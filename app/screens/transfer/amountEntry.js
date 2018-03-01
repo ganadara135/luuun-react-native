@@ -8,9 +8,11 @@ import {
     TouchableHighlight,
     Text,
     Alert,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
+    ActivityIndicator,
 } from 'react-native'
-import TransactionService from './../../services/transactionService'
+import Spinner from 'react-native-loading-spinner-overlay'
+import stellarService from './../../services/stellarService'
 import ResetNavigation from './../../util/resetNavigation'
 import TextInput from './../../components/textInput'
 import UserInfoService from './../../services/userInfoService'
@@ -23,18 +25,54 @@ export default class AmountEntry extends Component {
         title: 'Send money',
     }
 
+
     constructor(props) {
         super(props)
         const params = this.props.navigation.state.params
         this.state = {
             reference: params.reference,
-            balance: 0,
+            recipient: params.recipient,
+            balance: params.balance,
             amount: 0,
+            memo: params.memo,
+            balance: 0,
             note: '',
-            disabled: false
+            disabled: false,
+            loading: false,
+            loadingMessage: "",
         }
     }
-    componentWillMount(){
+
+    transferConfirmed = async (amount) => {
+        this.setState({
+            loading: true,
+            loadingMessage: 'Sending...',
+        })
+        let responseJson = await stellarService.sendMoney(amount, this.state.memo, this.state.reference, 'XLM', 'default')
+        if (responseJson.status === 201) {
+            Alert.alert('Success',
+                "Transaction successful",
+                [{text: 'OK', onPress: () => {
+                    this.setState({
+                        loading: false,
+                    })
+                    ResetNavigation.dispatchToSingleRoute(this.props.navigation, "Home")
+                }}])
+        }
+        else {
+            Alert.alert('Error',
+                "Transaction failed",
+                [{
+                    text: 'OK',onPress:()=>{
+                        this.setState({
+                            loading: false,
+                        })
+                    }
+                }])
+        }
+    }
+
+    componentWillMount() {
         this.getBalanceInfo()
     }
 
@@ -51,13 +89,13 @@ export default class AmountEntry extends Component {
             const currency = JSON.parse(data)
             let amount = new Big(this.state.amount)
             for (let i = 0; i < currency.divisibility; i++) {
-              amount = amount.times(10)
+                amount = amount.times(10)
             }
             Alert.alert(
                 'Are you sure?',
-                'Send ' + currency.symbol + this.state.amount + ' to ' + this.state.reference,
+                'Send ' + currency.symbol + this.state.amount + ' to ' + this.state.recipient,
                 [
-                    {text: 'Yes', onPress: () => this.transferConfirmed(amount)},
+                    {text: 'Yes', onPress: () => this.transferConfirmed(amount, currency.code)},
                     {
                         text: 'No',
                         onPress: () => ResetNavigation.dispatchToSingleRoute(this.props.navigation, "Home"),
@@ -78,21 +116,39 @@ export default class AmountEntry extends Component {
         let responseJson = await UserInfoService.getActiveAccount()
         if (responseJson.status === "success") {
             let account = responseJson.data.results[0].currencies[0]
-            this.setState({ balance: this.setBalance(account.available_balance, account.currency.divisibility) })
+            this.setState({balance: this.setBalance(account.available_balance, account.currency.divisibility)})
         }
     }
-
-    transferConfirmed = async (amount) => {
-        let responseJson = await TransactionService.sendMoney(amount, this.state.reference, this.state.note)
+    
+    transferConfirmed = async (amount, currencey) => {
+        this.setState({
+            loading: true,
+            loadingMessage: 'Sending...',
+        })
+        const reference = await AsyncStorage.getItem('account_reference');
+        let responseJson = await TransactionService.sendMoney(amount, this.state.recipient, this.state.note, currencey, JSON.parse(reference))
         if (responseJson.status === "success") {
             Alert.alert('Success',
                 "Transaction successful",
-                [{text: 'OK', onPress: () => ResetNavigation.dispatchToSingleRoute(this.props.navigation, "Home")}])
+                [{
+                    text: 'OK', onPress: () => {
+                        this.setState({
+                            loading: false,
+                        })
+                        ResetNavigation.dispatchToSingleRoute(this.props.navigation, "Home")
+                    }
+                }])
         }
         else {
             Alert.alert('Error',
                 responseJson.message,
-                [{text: 'OK'}])
+                [{
+                    text: 'OK', onPress: () => {
+                        this.setState({
+                            loading: false,
+                        })
+                    }
+                }])
         }
     }
 
@@ -123,6 +179,11 @@ export default class AmountEntry extends Component {
                     back
                     title="Send money"
                 />
+                <Spinner
+                    visible={this.state.loading}
+                    textContent={this.state.loadingMessage}
+                    textStyle={{color: '#FFF'}}
+                />
                 <KeyboardAvoidingView style={styles.container} behavior={'padding'}>
                     <ScrollView keyboardDismissMode={'interactive'}>
                         <TextInput
@@ -134,13 +195,13 @@ export default class AmountEntry extends Component {
                             onChangeText={this.amountChanged}
                         />
                         <TextInput
-                            title="Note"
-                            placeholder="Enter note here"
+                            title="Memo"
+                            placeholder="Enter memo here"
                             autoCapitalize="none"
                             placeholderTextColor="lightgray"
                             multiline={true}
                             underlineColorAndroid="white"
-                            onChangeText={(note) => this.setState({note})}
+                            onChangeText={(memo) => this.setState({memo:memo})}
                         />
                     </ScrollView>
                     {   this.state.disabled ?

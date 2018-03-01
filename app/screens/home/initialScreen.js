@@ -16,9 +16,9 @@ export default class InitialScreen extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
+                <View style={styles.imageContainer}>
                     <Image
-                        source={require('./../../../assets/icons/leap.png')}
+                        source={require('./../../../assets/icons/leap_home.png')}
                         resizeMode="contain"
                         style={styles.image}/>
                 </View>
@@ -27,14 +27,14 @@ export default class InitialScreen extends Component {
                         style={styles.button}
                         onPress={() => this.props.navigation.navigate("Login")}>
                         <Text style={styles.buttonText}>
-                            Sign In
+                            Sign in
                         </Text>
                     </TouchableHighlight>
                     <TouchableHighlight
                         style={[styles.button, {marginLeft: 25}]}
                         onPress={() => this.props.navigation.navigate("Signup")}>
                         <Text style={styles.buttonText}>
-                            Sign Up
+                            Sign up
                         </Text>
                     </TouchableHighlight>
                 </View>
@@ -52,6 +52,11 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: 'white'
+    },
+    imageContainer:{
+        flex:1,
+        alignItems:'center',
+        justifyContent:'center'
     },
     image: {
         maxWidth: 250,

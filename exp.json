@@ -4,13 +4,13 @@
   "slug": "luuun",
   "privacy": "public",
   "sdkVersion": "24.0.0",
-  "version": "1.0.4",
+  "version": "1.0.6",
   "icon": "./assets/icons/leap.png",
   "orientation": "portrait",
   "primaryColor": "#cccccc",
   "loading": {
-    "icon": "./assets/icons/loading.png",
-    "hideExponentText": true
+    "icon": "./assets/icons/new_loading.png",
+    "hideExponentText": false
   },
   "packagerOpts": {
     "assetExts": [
@@ -23,7 +23,7 @@
     "bundleIdentifier": "com.luuun"
   },
   "android": {
-    "versionCode": 6,
+    "versionCode": 8,
     "package": "com.luuun"
   }
 }

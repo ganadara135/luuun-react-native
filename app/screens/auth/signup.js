@@ -79,6 +79,7 @@ export default class Signup extends Component {
                             />
                             <TextInput
                                 title="Email"
+                                required
                                 underlineColorAndroid="white"
                                 placeholder="e.g john@gmail.com"
                                 autoCapitalize="none"
@@ -96,6 +97,7 @@ export default class Signup extends Component {
                             />
                             <TextInput
                                 title="Password"
+                                required
                                 placeholder="Password"
                                 underlineColorAndroid="white"
                                 autoCapitalize="none"
@@ -104,6 +106,7 @@ export default class Signup extends Component {
                             />
                             <TextInput
                                 title="Confirm password"
+                                required
                                 placeholder="Confirm password"
                                 underlineColorAndroid="white"
                                 autoCapitalize="none"

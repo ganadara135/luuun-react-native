@@ -5,6 +5,10 @@ var UserInfoService = {
         return BaseService.get('company/')
     },
 
+    getAllCompanyCurrencies: () => {
+        return BaseService.get('company/currencies/')
+    },
+
     getDepositInfo: () => {
         return BaseService.get('company/bank-account/')
     },
