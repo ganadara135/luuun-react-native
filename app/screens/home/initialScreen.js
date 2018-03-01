@@ -16,7 +16,7 @@ export default class InitialScreen extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
+                <View style={styles.imageContainer}>
                     <Image
                         source={require('./../../../assets/icons/leap_home.png')}
                         resizeMode="contain"
@@ -52,6 +52,11 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: 'white'
+    },
+    imageContainer:{
+        flex:1,
+        alignItems:'center',
+        justifyContent:'center'
     },
     image: {
         maxWidth: 250,

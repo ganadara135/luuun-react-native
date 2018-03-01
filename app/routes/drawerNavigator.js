@@ -11,6 +11,7 @@ import Logout from './../screens/auth/logout'
 import DrawerHeader from './../components/drawerHeader'
 import GetVerified from './../screens/settings/getVerified/getVerified2'
 import Colors from './../config/colors'
+import Currencies from './../screens/accounts/accountsB'
 
 const RouteConfigs = {
     Home: {

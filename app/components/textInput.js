@@ -26,9 +26,17 @@ export default class Account extends Component {
                               onPress={this.props.editable}
                         />
                     </View> :
-                    <Text style={[styles.text, {color: this.state.textColor}]}>
-                        {this.props.title}
-                    </Text>
+                    <View style={{flexDirection: 'row'}}>
+                        <Text style={[styles.text, {color: this.state.textColor}]}>
+                            {this.props.title}
+                        </Text>
+                        {
+                            this.props.required?
+                            <Text style={{paddingLeft:2,color: Colors.red}}>
+                                *
+                            </Text>:null
+                        }
+                    </View>
                 }
                 <TextInput
                     onFocus={() => this.setState({

@@ -16,7 +16,7 @@ export default class Settings extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            routeName: this.props.navigation.state.params?this.props.navigation.state.params.name:null,
+            routeName: this.props.navigation.state.params ? this.props.navigation.state.params.name:null,
             refreshing: false,
             loading: false,
             loadingMessage: '',

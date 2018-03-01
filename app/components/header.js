@@ -11,7 +11,7 @@ export default class Account extends Component {
         this.state = {
             offline: false,
             online:false,
-            firstTime: true,
+            firstTime: true
         }
     }
 
@@ -51,7 +51,7 @@ export default class Account extends Component {
 
     render() {
         return (
-            <View style={{paddingTop: Expo.Constants.statusBarHeight, backgroundColor:Colors.lightblue}}>
+            <View style={{paddingTop: Expo.Constants.statusBarHeight,backgroundColor:Colors.lightblue}}>
                 {
                     this.props.creditSwitch === false && this.props.debitSwitch === true &&
                      <View style={{paddingVertical:4, paddingHorizontal: 20, backgroundColor:Colors.red, justifyContent:'center',alignItems:'center'}}>

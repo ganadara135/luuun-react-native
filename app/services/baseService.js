@@ -34,15 +34,17 @@ let _apiCallWithData = async (url, method, data) => {
     let responseJson = await response.json()
     return responseJson
   } catch (error) {
-    Alert.alert(
+      console.log(JSON.stringify(error))
+    /*Alert.alert(
       "Error",
       JSON.stringify(error),
       [{ text: 'OK' }]
-    )
+    )*/
   }
 }
 
 let _apiCallWithoutData = async (url, method) => {
+  //console.log(url)
   try {
     let headers = await getHeaders()
     let response = await fetch(url, {
@@ -57,12 +59,13 @@ let _apiCallWithoutData = async (url, method) => {
     }
     return responseJson
   } catch (error) {
-    Alert.alert(
+      console.log(JSON.stringify(error))
+    /*Alert.alert(
       "Error",
       JSON.stringify(error),
       [{ text: 'OK' }]
-    )
-    return { status: "error" }
+    )*/
+    return {}
   }
 }
 
@@ -81,11 +84,12 @@ let _apiCallFileUpload = async (url, method, data) => {
     let responseJson = await response.json()
     return responseJson
   } catch (error) {
-    Alert.alert(
+      console.log(JSON.stringify(error))
+    /*Alert.alert(
       "Error",
       JSON.stringify(error),
       [{ text: 'OK' }]
-    )
+    )*/
   }
 }
 
