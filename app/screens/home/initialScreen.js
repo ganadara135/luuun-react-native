@@ -18,7 +18,7 @@ export default class InitialScreen extends Component {
             <View style={styles.container}>
                 <View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
                     <Image
-                        source={require('./../../../assets/icons/leap_home.png')}
+                        source={require('./../../../assets/icons/logo.png')}
                         resizeMode="contain"
                         style={styles.image}/>
                 </View>
@@ -51,7 +51,7 @@ export default class InitialScreen extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'white'
+        backgroundColor: Colors.darkgray
     },
     image: {
         maxWidth: 250,
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
         paddingVertical:25,
     },
     button: {
-        backgroundColor: Colors.lightblue,
+        backgroundColor: 'white',
         height: 50,
         borderRadius:25,
         flex: 1,
@@ -73,10 +73,10 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         fontSize: 20,
-        color: 'white'
+        color: Colors.darkgray
     },
     textContainer: {
-        backgroundColor: Colors.lightgray,
+        backgroundColor: Colors.darkgray,
         paddingHorizontal: 25,
         height: 80,
         justifyContent:'center',
@@ -84,6 +84,6 @@ const styles = StyleSheet.create({
     },
     text: {
         fontSize: 12,
-        color: Colors.lightblue
+        color: 'white'
     }
 })
