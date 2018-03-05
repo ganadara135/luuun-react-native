@@ -32,8 +32,8 @@ export default class Account extends Component {
                 }
                 <TextInput
                     onFocus={() => this.setState({
-                        textColor: Colors.lightblue,
-                        borderColor: Colors.lightblue
+                        textColor: Colors.darkgray,
+                        borderColor: Colors.darkgray
                     })}
                     onBlur={() => this.setState({
                         textColor: Colors.black,

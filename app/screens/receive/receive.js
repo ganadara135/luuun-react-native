@@ -139,7 +139,7 @@ export default class Receive extends Component {
                                     Luuun supports the Stellar federation address protocol.
                                     If your client supports this protocol too, you can send
                                     lumens to {this.state.cryptoAddress.reference.replace("*luuun.com", "")}*<Text
-                                    style={{color: Colors.lightblue}}>luuun.com.</Text>{"\n"}{"\n"}
+                                    style={{color: Colors.darkgray}}>luuun.com.</Text>{"\n"}{"\n"}
                                 </Text>
                                 Happy Luuuning!
                             </Text>

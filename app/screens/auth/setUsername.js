@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
   submit: {
     flex: 1,
     padding: 10,
-    backgroundColor: Colors.lightblue,
+    backgroundColor: Colors.darkgray,
     width: "100%",
     alignItems: 'center',
     justifyContent: 'center',

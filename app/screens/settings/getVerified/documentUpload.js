@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
     },
     submit: {
-        backgroundColor: Colors.lightblue,
+        backgroundColor: Colors.darkgray,
         height: 50,
         borderRadius: 25,
         flex: 1,
