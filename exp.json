@@ -9,7 +9,7 @@
   "orientation": "portrait",
   "primaryColor": "#cccccc",
   "loading": {
-    "icon": "./assets/icons/new_loading.png",
+    "icon": "./assets/icons/leap.png",
     "hideExponentText": false
   },
   "packagerOpts": {
