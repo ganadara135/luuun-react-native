@@ -58,8 +58,10 @@ export default class Account extends Component {
 
 const styles = StyleSheet.create({
     input: {
-        height: 26,
+        height: 50,
         paddingLeft: 0,
+        paddingBottom: 10,
+        paddingTop:15,
         color: Colors.black,
         fontWeight: 'normal',
         borderColor: 'white',
@@ -68,13 +70,12 @@ const styles = StyleSheet.create({
     },
     text: {
         fontSize: 16,
-        paddingBottom: 15,
     },
     inputContainer: {
         flexDirection: 'column',
         marginLeft: 20,
         marginRight: 20,
-        paddingVertical: 10,
+        paddingTop:10,
         borderBottomWidth: 1,
     },
 })

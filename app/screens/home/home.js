@@ -1,5 +1,16 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, AsyncStorage, TouchableHighlight, Text, Image, TouchableWithoutFeedback } from 'react-native'
+import {
+    View,
+    StyleSheet,
+    AsyncStorage,
+    TouchableHighlight,
+    Alert,
+    Text,
+    ScrollView,
+    ListView,
+    Image,
+    TouchableWithoutFeedback
+} from 'react-native'
 import moment from 'moment'
 import PopupDialog from 'react-native-popup-dialog'
 import UserInfoService from './../../services/userInfoService'
@@ -9,6 +20,18 @@ import ResetNavigation from './../../util/resetNavigation'
 import Colors from './../../config/colors'
 import StellarService from './../../services/stellarService'
 import Header from './../../components/header'
+import HomeCard from './../../components/homeCard'
+import Swiper from 'react-native-swiper'
+
+const renderPagination = (index, total, context) => {
+    return (
+        <View style={styles.paginationStyle}>
+            <Text style={{ color: 'grey' }}>
+
+            </Text>
+        </View>
+    )
+}
 
 export default class Home extends Component {
     static navigationOptions = {
@@ -173,8 +196,47 @@ export default class Home extends Component {
                     </View>
                 </View>
                 <View style={styles.transaction}>
-                    <Transactions updateBalance={this.getBalanceInfo} showDialog={this.showDialog}
-                        logout={this.logout} />
+                  <Swiper renderPagination={renderPagination}
+                            loop={false}>
+                            <View style={{ flex: 1, backgroundColor: Colors.lightgray, paddingHorizontal: 20 }}>
+                                <ScrollView showsVerticalScrollIndicator={false}>
+                                    <HomeCard
+                                        key={0}
+                                        title="Welcome to Rehive"
+                                        image={require('./../../../assets/icons/new_logo.png')}
+                                        text="Put your logo and brand here."
+                                        buttonText="Cool" />
+                                    <HomeCard
+                                        key={1}
+                                        title="Get started"
+                                        image={require('./../../../assets/icons/demo1.png')}
+                                        text="Tell your customers what your app is about."
+                                        buttonText="Let's go" />
+                                    <HomeCard
+                                        key={2}
+                                        title="This is a demo app"
+                                        image={require('./../../../assets/icons/demo2.png')}
+                                        text="Note that you have to verify your email or mobile number to claim funds that has been sent to you."
+                                        buttonText="Cool" />
+                                    <HomeCard
+                                        key={3}
+                                        title="Get verified"
+                                        image={require('./../../../assets/icons/demo3.png')}
+                                        text="Go to get verified page"
+                                        buttonText="Verify"
+                                        navigation={this.props.navigation} />
+                                    <View
+                                        key={4}
+                                        style={styles.falseView} />
+
+                                </ScrollView>
+
+                            </View>
+                            <Transactions
+                                updateBalance={this.getBalanceInfo}
+                                showDialog={this.showDialog}
+                                logout={this.logout} />
+                        </Swiper>
                 </View>
                 <View style={styles.buttonbar}>
                     <TouchableHighlight
@@ -276,4 +338,3 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
 })
-
