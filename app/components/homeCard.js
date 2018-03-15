@@ -24,7 +24,7 @@ export default class HomeCard extends Component {
 
     goto = (navigation) => {
         if (navigation) {
-            this.props.navigation.navigate('GetVerified')
+            this.props.navigation.navigate('About')
         } else {
             this.setState({
                 showCard: false

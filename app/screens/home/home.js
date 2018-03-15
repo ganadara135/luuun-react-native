@@ -9,6 +9,7 @@ import {
     ScrollView,
     ListView,
     Image,
+    Linking,
     TouchableWithoutFeedback
 } from 'react-native'
 import moment from 'moment'
@@ -276,27 +277,27 @@ export default class Home extends Component {
                                         key={0}
                                         title="Welcome to Luuun"
                                         image={require('./../../../assets/icons/leap.png')}
-                                        text="Send money globally instantly and securely using the Stellar network!"
+                                        text="A simple, user-friendly web wallet to send Stellar Lumens and Assets globally, instantly and securely using the Stellar network!"
                                         buttonText="Cool" />
                                     <HomeCard
                                         key={1}
                                         title="About Stellar"
-                                        image={require('./../../../assets/icons/demo1.png')}
-                                        text="Tell your customers what your app is about."
-                                        buttonText="Let's go" />
+                                        image={require('./../../../assets/icons/stellar-logo.png')}
+                                        text="Stellar is a platform that connects banks, payments systems, and people."
+                                        buttonText="Awesome"/>
                                     <HomeCard
                                         key={2}
-                                        title="This is a demo app"
-                                        image={require('./../../../assets/icons/demo2.png')}
-                                        text="Note that you have to verify your email or mobile number to claim funds that has been sent to you."
-                                        buttonText="Cool" />
+                                        title="2018 Q1 Update"
+                                        image={require('./../../../assets/icons/demo1.png')}
+                                        text="We've compiled a little update on the history of the Luuun app and future plans for the app."
+                                        buttonText="View About"
+                                        navigation={this.props.navigation} />
                                     <HomeCard
                                         key={3}
-                                        title="Get verified"
+                                        title="Please Verify Your Email"
                                         image={require('./../../../assets/icons/demo3.png')}
-                                        text="Go to get verified page"
-                                        buttonText="Verify"
-                                        navigation={this.props.navigation} />
+                                        text="Note that you have to verify your email or mobile number to claim funds that has been sent to you."
+                                        buttonText="Verify" />
                                     <View
                                         key={4}
                                         style={styles.falseView} />
