@@ -9,12 +9,14 @@ import {
     Text,
     Alert,
     ListView,
-    ActivityIndicator
+    ActivityIndicator,
+    Picker
 } from 'react-native'
 import Contact from './../../components/contact'
 import TextInput from './../../components/textInput'
 import ContactService from './../../services/contactService'
 import UserInfoService from './../../services/userInfoService'
+import AccountService from './../../services/accountService'
 import Auth from './../../util/auth'
 import Colors from './../../config/colors'
 import Header from './../../components/header'
@@ -32,11 +34,36 @@ export default class SendTo extends Component {
             reference: "",
             searchText: "",
             data: [],
+            // currenciesData: new Picker.DataSource({
+            //     rowHasChanged: (r1, r2) => JSON.stringify(r1) !== JSON.stringify(r2),
+            // }),
+            currencies: [],
+            selectedCurrency: "XLM",
             contacts: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
         }
     }
 
     async componentWillMount() {
+        let activeAccountData = await UserInfoService.getActiveAccount()
+        if (activeAccountData.status === "success") {
+            let responseJson2 = await AccountService.getAllAccountCurrencies(
+                activeAccountData.data.results[0].reference
+            );
+            if (responseJson2.status === "success") {
+                const currencies = responseJson2.data.results
+                this.setState({
+                    currencies: currencies.map((item, key)=>(
+                            item.currency.code
+                        )
+                    ),
+                    balances: currencies.map((item, key)=>(
+                            item.currency.code
+                        )
+                    ),
+                    selectedCurrency: "XLM",
+                })
+            }
+        }
         this.showContactsAsync()
         let responseJson = await UserInfoService.getUserDetails()
         if (responseJson.status === "success") {
@@ -133,7 +160,9 @@ export default class SendTo extends Component {
             this.setState({reference: this.state.searchText})
         }
 
-        this.props.navigation.navigate("SendMoney", {reference: this.state.searchText, memo: ""})
+        this.props.navigation.navigate(
+            "SendMoney", {reference: this.state.searchText, memo: "", currency: selectedCurrency}
+        )
     }
 
     goToBarcodeScanner = () => {
@@ -152,6 +181,14 @@ export default class SendTo extends Component {
                     />
                     <KeyboardAvoidingView style={styles.container} behavior={'padding'} keyboardVerticalOffset={75}>
                         <View style={{flex: 1}}>
+                            <Picker
+                                style={{flex: 1,marginHorizontal:20,marginTop:10}}
+                                selectedValue={this.state.selectedCurrency}
+                                onValueChange={(modeValue, modeIndex) => this.setState({selectedCurrency: modeValue})}>
+                                {this.state.currencies.map((item, key)=>(
+                                    <Picker.Item label={item} value={item} key={key} />)
+                                )}
+                            </Picker>
                             <TextInput
                                 title="Recipient"
                                 placeholder="Enter email, stellar address or mobile"
@@ -193,6 +230,14 @@ export default class SendTo extends Component {
                     />
                     <KeyboardAvoidingView style={styles.container} behavior={'padding'}>
                         <View style={{flex: 1}}>
+                            <Picker
+                                style={{flex: 1,marginHorizontal:20,marginTop:10}}
+                                selectedValue={this.state.selectedCurrency}
+                                onValueChange={(modeValue, modeIndex) => this.setState({selectedCurrency: modeValue})}>
+                                {this.state.currencies.map((item, key)=>(
+                                    <Picker.Item label={item} value={item} key={key} />)
+                                )}
+                            </Picker>
                             <TextInput
                                 title="Recipient"
                                 placeholder="Enter email, stellar address or mobile"

@@ -38,6 +38,7 @@ export default class AmountEntry extends Component {
             disabled: false,
             loading: false,
             loadingMessage: "",
+            currency: params.currency
         }
     }
 
@@ -46,7 +47,7 @@ export default class AmountEntry extends Component {
             loading: true,
             loadingMessage: 'Sending...',
         })
-        let responseJson = await stellarService.sendMoney(amount, this.state.memo, this.state.reference, 'XLM', 'default')
+        let responseJson = await stellarService.sendMoney(amount, this.state.memo, this.state.reference, this.state.currency, 'default')
         if (responseJson.status === 201) {
             Alert.alert('Success',
                 "Transaction successful",
