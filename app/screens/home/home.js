@@ -202,13 +202,13 @@ export default class Home extends Component {
                                 <ScrollView showsVerticalScrollIndicator={false}>
                                     <HomeCard
                                         key={0}
-                                        title="Welcome to Rehive"
-                                        image={require('./../../../assets/icons/new_logo.png')}
-                                        text="Put your logo and brand here."
+                                        title="Welcome to Luuun"
+                                        image={require('./../../../assets/icons/leap.png')}
+                                        text="Send money globally instantly and securely using the Stellar network!"
                                         buttonText="Cool" />
                                     <HomeCard
                                         key={1}
-                                        title="Get started"
+                                        title="About Stellar"
                                         image={require('./../../../assets/icons/demo1.png')}
                                         text="Tell your customers what your app is about."
                                         buttonText="Let's go" />
