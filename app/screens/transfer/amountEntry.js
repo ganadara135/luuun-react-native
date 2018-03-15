@@ -31,8 +31,6 @@ export default class AmountEntry extends Component {
         const params = this.props.navigation.state.params
         this.state = {
             reference: params.reference,
-            recipient: params.recipient,
-            balance: params.balance,
             amount: 0,
             memo: params.memo,
             balance: 0,
@@ -93,9 +91,9 @@ export default class AmountEntry extends Component {
             }
             Alert.alert(
                 'Are you sure?',
-                'Send ' + currency.symbol + this.state.amount + ' to ' + this.state.recipient,
+                'Send ' + currency.symbol + this.state.amount + ' to ' + this.state.reference,
                 [
-                    {text: 'Yes', onPress: () => this.transferConfirmed(amount, currency.code)},
+                    {text: 'Yes', onPress: () => this.transferConfirmed(amount)},
                     {
                         text: 'No',
                         onPress: () => ResetNavigation.dispatchToSingleRoute(this.props.navigation, "Home"),
@@ -117,38 +115,6 @@ export default class AmountEntry extends Component {
         if (responseJson.status === "success") {
             let account = responseJson.data.results[0].currencies[0]
             this.setState({balance: this.setBalance(account.available_balance, account.currency.divisibility)})
-        }
-    }
-    
-    transferConfirmed = async (amount, currencey) => {
-        this.setState({
-            loading: true,
-            loadingMessage: 'Sending...',
-        })
-        const reference = await AsyncStorage.getItem('account_reference');
-        let responseJson = await TransactionService.sendMoney(amount, this.state.recipient, this.state.note, currencey, JSON.parse(reference))
-        if (responseJson.status === "success") {
-            Alert.alert('Success',
-                "Transaction successful",
-                [{
-                    text: 'OK', onPress: () => {
-                        this.setState({
-                            loading: false,
-                        })
-                        ResetNavigation.dispatchToSingleRoute(this.props.navigation, "Home")
-                    }
-                }])
-        }
-        else {
-            Alert.alert('Error',
-                responseJson.message,
-                [{
-                    text: 'OK', onPress: () => {
-                        this.setState({
-                            loading: false,
-                        })
-                    }
-                }])
         }
     }
 
