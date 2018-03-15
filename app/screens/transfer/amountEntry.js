@@ -75,7 +75,14 @@ export default class AmountEntry extends Component {
     }
 
     send = async () => {
-        if (this.state.amount <= 0) {
+        if (this.state.memo == "" && this.state.reference.indexOf('*') !== -1 ) {
+            Alert.alert(
+                'Invalid',
+                'Please enter a memo when sending to a federation address',
+                [[{text: 'OK'}]]
+            )
+        }
+        else if (this.state.amount <= 0) {
             Alert.alert(
                 'Invalid',
                 'Enter valid amount',
