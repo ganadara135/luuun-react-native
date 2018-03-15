@@ -170,6 +170,13 @@ export default class SendTo extends Component {
                                     size="large"
                                 />
                             </View>
+                            <TouchableHighlight
+                                style={styles.submit}
+                                onPress={this.send}>
+                                <Text style={{color: 'white', fontSize: 20}}>
+                                    Next
+                                </Text>
+                            </TouchableHighlight>
                         </View>
                     </KeyboardAvoidingView>
                 </View>
