@@ -5,3 +5,4 @@ ios
 *.jks
 package-lock.json
 yarn.lock
+.idea/*

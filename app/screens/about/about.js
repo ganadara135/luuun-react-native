@@ -48,6 +48,19 @@ export default class About extends Component {
     })
   }
 
+  openUpdateLink = () => {
+    Linking.canOpenURL('https://medium.com/luuun/luuun-intro-and-2018-q1-update-7fae10e77fed').then(supported => {
+      if (supported) {
+        Linking.openURL('https://medium.com/luuun/luuun-intro-and-2018-q1-update-7fae10e77fed')
+      }
+      else {
+        Alert.alert('Error',
+          'Don\'t know how to open URI: ' + 'https://medium.com/luuun/luuun-intro-and-2018-q1-update-7fae10e77fed',
+          [{ text: 'OK' }])
+      }
+    })
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -57,19 +70,28 @@ export default class About extends Component {
           title="About"
         />
         <View style={styles.details}>
-          <Text style={{ fontSize: 30, color: Colors.black }}>
+          <Text style={{ fontSize: 40, color: Colors.black }}>
             {this.state.company.name}
           </Text>
           <View style={styles.description}>
-            <Text style={{ fontSize: 20, color: Colors.black }}>
-              {this.state.company.description}
-            </Text>
             <Text
               style={{ fontSize: 20, color: Colors.darkblue }}
               onPress={this.openLink}>
-              (link)
+              Luuun Website
             </Text>
           </View>
+          <View style={styles.description}>
+            <Text
+              style={{ fontSize: 20, color: Colors.darkblue }}
+              onPress={this.openUpdateLink}>
+              Luuun 2018 Q1 Update
+            </Text>
+          </View>
+        </View>
+        <View style={styles.details}>
+          <Text style={{ fontSize: 20, color: Colors.black }}>
+            Luun is a simple, user-friendly web wallet for Stellar Lumens and other Stellar assets on the Stellar blockchain.
+          </Text>
         </View>
         <View style={styles.logo}>
           {this.state.company.logo !== null ?

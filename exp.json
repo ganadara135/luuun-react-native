@@ -9,8 +9,8 @@
   "orientation": "portrait",
   "primaryColor": "#cccccc",
   "loading": {
-    "icon": "./assets/icons/loading.png",
-    "hideExponentText": true
+    "icon": "./assets/icons/leap.png",
+    "hideExponentText": false
   },
   "packagerOpts": {
     "assetExts": [

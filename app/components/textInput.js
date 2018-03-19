@@ -26,9 +26,17 @@ export default class Account extends Component {
                               onPress={this.props.editable}
                         />
                     </View> :
-                    <Text style={[styles.text, {color: this.state.textColor}]}>
-                        {this.props.title}
-                    </Text>
+                    <View style={{flexDirection: 'row'}}>
+                        <Text style={[styles.text, {color: this.state.textColor}]}>
+                            {this.props.title}
+                        </Text>
+                        {
+                            this.props.required?
+                            <Text style={{paddingLeft:2,color: Colors.red}}>
+                                *
+                            </Text>:null
+                        }
+                    </View>
                 }
                 <TextInput
                     onFocus={() => this.setState({
@@ -50,8 +58,10 @@ export default class Account extends Component {
 
 const styles = StyleSheet.create({
     input: {
-        height: 26,
+        height: 50,
         paddingLeft: 0,
+        paddingBottom: 10,
+        paddingTop:15,
         color: Colors.black,
         fontWeight: 'normal',
         borderColor: 'white',
@@ -60,13 +70,12 @@ const styles = StyleSheet.create({
     },
     text: {
         fontSize: 16,
-        paddingBottom: 15,
     },
     inputContainer: {
         flexDirection: 'column',
         marginLeft: 20,
         marginRight: 20,
-        paddingVertical: 10,
+        paddingTop:10,
         borderBottomWidth: 1,
     },
 })

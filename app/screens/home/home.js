@@ -1,5 +1,17 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, AsyncStorage, TouchableHighlight, Text, Image, TouchableWithoutFeedback } from 'react-native'
+import {
+    View,
+    StyleSheet,
+    AsyncStorage,
+    TouchableHighlight,
+    Alert,
+    Text,
+    ScrollView,
+    ListView,
+    Image,
+    Linking,
+    TouchableWithoutFeedback
+} from 'react-native'
 import moment from 'moment'
 import PopupDialog from 'react-native-popup-dialog'
 import UserInfoService from './../../services/userInfoService'
@@ -8,7 +20,20 @@ import Auth from './../../util/auth'
 import ResetNavigation from './../../util/resetNavigation'
 import Colors from './../../config/colors'
 import StellarService from './../../services/stellarService'
+import AccountService from './../../services/accountService'
 import Header from './../../components/header'
+import HomeCard from './../../components/homeCard'
+import Swiper from 'react-native-swiper'
+
+const renderPagination = (index, total, context) => {
+    return (
+        <View style={styles.paginationStyle}>
+            <Text style={{ color: 'grey' }}>
+
+            </Text>
+        </View>
+    )
+}
 
 export default class Home extends Component {
     static navigationOptions = {
@@ -24,6 +49,14 @@ export default class Home extends Component {
             dataToShow: {
                 currency: {},
             },
+            selectedCurrency: -1,
+            company: {
+                name: '',
+            },
+            code: '',
+            dataSource: new ListView.DataSource({
+                rowHasChanged: (r1, r2) => JSON.stringify(r1) !== JSON.stringify(r2),
+            }),
             reference: '',
             creditSwitch: true,
             debitSwitch: true,
@@ -100,7 +133,8 @@ export default class Home extends Component {
     getBalanceInfo = async () => {
         let responseJson = await UserInfoService.getActiveAccount()
         if (responseJson.status === "success") {
-            let account = responseJson.data.results[0].currencies[0]
+            const account = responseJson.data.results[0].currencies[0];
+            AsyncStorage.setItem("account_reference",JSON.stringify(responseJson.data.results[0].reference));
             let settings = account.settings
             if (settings.allow_transactions === false) {
                 this.setState({
@@ -119,8 +153,23 @@ export default class Home extends Component {
                 })
             }
             AsyncStorage.setItem('currency', JSON.stringify(account.currency))
-            this.setState({symbol: account.currency.symbol})
-            this.setState({balance: this.setBalance(account.available_balance, account.currency.divisibility)})
+            this.setState({
+                account: responseJson.data.results[0].name,
+                default: account,
+                code: account.currency.code,
+                symbol: account.currency.symbol,
+                reference: responseJson.data.results[0].reference,
+                balance: this.setBalance(account.available_balance, account.currency.divisibility),
+            })
+            let responseJson2 = await AccountService.getAllAccountCurrencies(this.state.reference)
+            if (responseJson2.status === "success") {
+                const currencies = responseJson2.data.results
+                this.setState({
+                    currencies: currencies,
+                    dataSource: this.state.dataSource.cloneWithRows(currencies),
+                    selectedCurrency: -1,
+                })
+            }
         }
         else {
             this.logout()
@@ -142,6 +191,51 @@ export default class Home extends Component {
         }
 
         return amount.toFixed(8).replace(/\.?0+$/, "")
+    }
+
+    tap1 = () => {
+        this.setState({
+            showTransaction: !this.state.showTransaction,
+        });
+    }
+
+    longTap1 = async () => {
+        Alert.alert(
+            "Are you sure?",
+            "Set it as active currency?",
+            [
+                { text: 'Yes', onPress: () => this.changeAccount() },
+                {
+                    text: 'No',
+                    style: 'cancel',
+                },
+            ]
+        )
+    }
+
+    tap2 = () => {
+        let index = (this.state.selectedCurrency + 1) % this.state.currencies.length
+        if (this.state.currencies[index].currency.symbol === this.state.symbol) {
+            index = (index + 1) % this.state.currencies.length
+        }
+        this.setState({
+            transactionView: true,
+            selectedCurrency: index,
+            code: this.state.currencies[index].currency.code,
+            symbol: this.state.currencies[index].currency.symbol,
+            balance: this.setBalance(this.state.currencies[index].available_balance, this.state.currencies[index].currency.divisibility),
+        });
+    }
+
+    changeAccount = async () => {
+        let responseJson = await AccountService.setActiveCurrency(this.state.reference, this.state.currencies[this.state.selectedCurrency].currency.code)
+        if (responseJson.status === "success") {
+            Alert.alert(
+                "Success",
+                "Your active currency has been changed successfully.",
+                [{ text: 'OK' }]
+            )
+        }
     }
 
     render() {
@@ -167,14 +261,55 @@ export default class Home extends Component {
                         <Text style={{ fontSize: 25, color: 'white' }}>
                             {this.state.symbol}
                         </Text>
-                        <Text style={{ paddingLeft: 5, fontSize: 40, color: 'white' }}>
+                        <Text style={{ paddingLeft: 5, fontSize: 40, color: 'white' }}
+                        onPress={() => this.tap2()}
+                        onLongPress={() => this.longTap1()}>
                             {this.state.balance.toFixed(4).replace(/0{0,2}$/, "")}
                         </Text>
                     </View>
                 </View>
                 <View style={styles.transaction}>
-                    <Transactions updateBalance={this.getBalanceInfo} showDialog={this.showDialog}
-                        logout={this.logout} />
+                  <Swiper renderPagination={renderPagination}
+                            loop={false}>
+                            <View style={{ flex: 1, backgroundColor: Colors.lightgray, paddingHorizontal: 20 }}>
+                                <ScrollView showsVerticalScrollIndicator={false}>
+                                    <HomeCard
+                                        key={0}
+                                        title="Welcome to Luuun"
+                                        image={require('./../../../assets/icons/leap.png')}
+                                        text="A simple, user-friendly web wallet to send Stellar Lumens and Assets globally, instantly and securely using the Stellar network!"
+                                        buttonText="Cool" />
+                                    <HomeCard
+                                        key={1}
+                                        title="About Stellar"
+                                        image={require('./../../../assets/icons/stellar-logo.png')}
+                                        text="Stellar is a platform that connects banks, payments systems, and people."
+                                        buttonText="Awesome"/>
+                                    <HomeCard
+                                        key={2}
+                                        title="2018 Q1 Update"
+                                        image={require('./../../../assets/icons/demo1.png')}
+                                        text="We've compiled a little update on the history of the Luuun app and future plans for the app."
+                                        buttonText="View About"
+                                        navigation={this.props.navigation} />
+                                    <HomeCard
+                                        key={3}
+                                        title="Please Verify Your Email"
+                                        image={require('./../../../assets/icons/demo3.png')}
+                                        text="Note that you have to verify your email or mobile number to claim funds that has been sent to you."
+                                        buttonText="Verify" />
+                                    <View
+                                        key={4}
+                                        style={styles.falseView} />
+
+                                </ScrollView>
+
+                            </View>
+                            <Transactions
+                                updateBalance={this.getBalanceInfo}
+                                showDialog={this.showDialog}
+                                logout={this.logout} />
+                        </Swiper>
                 </View>
                 <View style={styles.buttonbar}>
                     <TouchableHighlight
@@ -276,4 +411,3 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
 })
-
