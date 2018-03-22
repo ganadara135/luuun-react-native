@@ -307,6 +307,7 @@ export default class Home extends Component {
                             </View>
                             <Transactions
                                 updateBalance={this.getBalanceInfo}
+                                currency={this.state.code}
                                 showDialog={this.showDialog}
                                 logout={this.logout} />
                         </Swiper>

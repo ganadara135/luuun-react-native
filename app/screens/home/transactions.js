@@ -33,10 +33,28 @@ export default class Transactions extends Component {
     }
 
     async componentDidMount() {
-        this.getData()
+        let user=await AsyncStorage.getItem('user')
+        user=JSON.parse(user)
+        this.setState({
+            profile:user
+        })
+        this.getData(this.state.currency)
+    }
+
+    async componentWillReceiveProps(nextProps) {
+        if (this.props.currency !== nextProps.currency) {
+            this.setState({
+                initialLoading: true,
+                currency: nextProps.currency,
+                updateBalance: nextProps.updateBalance,
+                showDialog: nextProps.showDialog
+            })
+            this.getData(nextProps.currency)
+        }
     }
 
     setData = async (responseJson) => {
+        console.log(responseJson)
         if (responseJson.status === "success") {
             const data = this.state.data.concat(responseJson.data.results)
             this.setState({
@@ -78,14 +96,15 @@ export default class Transactions extends Component {
         }
     }
 
-    getData = async () => {
+    getData = async (currency) => {
         let user= await AsyncStorage.getItem('user')
         user=JSON.parse(user)
         this.setState({
             data: [],
-			user:user
+            user: user,
+            initialLoading: true
         })
-        let responseJson = await TransactionService.getAllTransactions()
+        let responseJson = await TransactionService.getAllTransactionsByCurrecny(currency)
         this.setData(responseJson)
     }
 
