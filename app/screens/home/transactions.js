@@ -109,10 +109,10 @@ export default class Transactions extends Component {
     }
 
     handleRefresh() {
-        this.props.updateBalance()
+        //this.props.updateBalance()
         if (this.state.loading !== true) {
             this.setState({refreshing: true});
-            this.getData().then(() => {
+            this.getData(this.state.currency).then(() => {
                 this.setState({refreshing: false});
             })
         }

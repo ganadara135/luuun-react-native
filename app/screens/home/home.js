@@ -230,6 +230,8 @@ export default class Home extends Component {
     changeAccount = async () => {
         let responseJson = await AccountService.setActiveCurrency(this.state.reference, this.state.currencies[this.state.selectedCurrency].currency.code)
         if (responseJson.status === "success") {
+            this.getBalanceInfo()
+            this.getUserInfo()
             Alert.alert(
                 "Success",
                 "Your active currency has been changed successfully.",

@@ -34,6 +34,7 @@ export default class AmountEntry extends Component {
             amount: 0,
             memo: params.memo,
             balance: 0,
+            code: '',
             note: '',
             disabled: false,
             loading: false,
@@ -46,7 +47,7 @@ export default class AmountEntry extends Component {
             loading: true,
             loadingMessage: 'Sending...',
         })
-        let responseJson = await stellarService.sendMoney(amount, this.state.memo, this.state.reference, 'XLM', 'default')
+        let responseJson = await stellarService.sendMoney(amount, this.state.memo, this.state.reference, this.state.code, 'default')
         if (responseJson.status === 201) {
             Alert.alert('Success',
                 "Transaction successful",
@@ -70,8 +71,14 @@ export default class AmountEntry extends Component {
         }
     }
 
-    componentWillMount() {
+    async componentWillMount() {
+        let data = await AsyncStorage.getItem("currency");
+        let currency = JSON.parse(data);
+        this.setState({
+            code:currency.code,
+        })
         this.getBalanceInfo()
+        
     }
 
     send = async () => {
