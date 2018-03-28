@@ -176,6 +176,42 @@ export default class Home extends Component {
         }
     }
 
+    updateBalanceInfo = async () => {
+        let responseJson = await UserInfoService.getActiveAccount()
+        if (responseJson.status === "success") {
+            const account = responseJson.data.results[0].currencies[0];
+            AsyncStorage.setItem("account_reference",JSON.stringify(responseJson.data.results[0].reference));
+            AsyncStorage.setItem('currency', JSON.stringify(account.currency))
+            if(this.state.selectedCurrency==-1) {
+                this.setState({
+                    account: responseJson.data.results[0].name,
+                    default: account,
+                    code: account.currency.code,
+                    symbol: account.currency.symbol,
+                    reference: responseJson.data.results[0].reference,
+                    balance: this.setBalance(account.available_balance, account.currency.divisibility),
+                })
+            }
+            let responseJson2 = await AccountService.getAllAccountCurrencies(this.state.reference)
+            if (responseJson2.status === "success") {
+                const currencies = responseJson2.data.results
+                this.setState({
+                    currencies: currencies,
+                    dataSource: this.state.dataSource.cloneWithRows(currencies)
+                })
+                let index = this.state.selectedCurrency
+                if(index!=-1){
+                    this.setState({
+                        balance: this.setBalance(this.state.currencies[index].available_balance, this.state.currencies[index].currency.divisibility),
+                    });
+                }
+            }
+        }
+        else {
+            this.logout()
+        }
+    }
+
     logout = () => {
         Auth.logout(this.props.navigation)
     }
@@ -308,11 +344,11 @@ export default class Home extends Component {
 
                             </View>
                             <Transactions
-                                updateBalance={this.getBalanceInfo}
+                                updateBalance={this.updateBalanceInfo}
                                 currency={this.state.code}
                                 showDialog={this.showDialog}
                                 logout={this.logout} />
-                        </Swiper>
+                            </Swiper>
                 </View>
                 <View style={styles.buttonbar}>
                     <TouchableHighlight
