@@ -1,3 +1,7 @@
+## check this when you are in trouble to install this Git
+https://github.com/react-native-training/react-native-elements/issues/620
+
+
 # Luuun wallet | React Native
 
 Try out the demo on Android or iOS here:
